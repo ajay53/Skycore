@@ -1,19 +1,13 @@
 package com.goazzi.skycore.view
 
 import android.Manifest
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
-import android.view.Window
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.children
-import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import com.goazzi.skycore.databinding.ActivityMainBinding
 import com.goazzi.skycore.misc.Util
@@ -21,7 +15,6 @@ import com.goazzi.skycore.model.Business
 import com.goazzi.skycore.model.SearchBusiness
 import com.goazzi.skycore.viewmodel.MainViewModel
 import com.goazzi.skycore.viewmodel.MainViewModelFactory
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,12 +39,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnDum.setOnClickListener {
             val searchBusiness =
-                SearchBusiness(40.730610, -73.935242, 1000, "best_match", 15)
+                SearchBusiness(40.730610, -73.935242, 500, "best_match", 20)
 //                SearchBusiness(18.61014312183422, 73.78609507664633, 1000, "best_match", 15)
             viewModel.setSearchBusiness(searchBusiness)
         }
 
-        viewModel.business.observe(this) { business ->
+        viewModel.businessServiceClass.observe(this) { business ->
             Log.d(TAG, "onCreate: business: $business")
         }
 

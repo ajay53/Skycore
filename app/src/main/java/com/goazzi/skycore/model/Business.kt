@@ -1,7 +1,6 @@
 package com.goazzi.skycore.model
 
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.Serializable
 
 data class Business(
     val alias: String,
@@ -24,7 +23,7 @@ data class Business(
     val name: String,
     val phone: String,
     val price: String,
-    val rating: Long,
+    val rating: Double,
 
     @SerializedName("review_count")
     val reviewCount: Long,

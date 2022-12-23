@@ -3,6 +3,7 @@ package com.goazzi.skycore.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.goazzi.skycore.model.Business
+import com.goazzi.skycore.model.BusinessesServiceClass
 import com.goazzi.skycore.model.Todos
 import com.goazzi.skycore.repository.api.RetrofitBuilder
 
@@ -24,22 +25,22 @@ object MainRepository {
         radius: Int,
         sortBy: String,
         limit: Int
-    ): LiveData<Business> {
+    ): LiveData<BusinessesServiceClass> {
         job = Job()
-        return object : LiveData<Business>() {
+        return object : LiveData<BusinessesServiceClass>() {
             override fun onActive() {
                 super.onActive()
                 job?.let {
                     CoroutineScope(IO + it).launch {
 //                        val todos: Todos = RetrofitBuilder.fakeApiService.getTodos(id)
-                        /*val business: Business = RetrofitBuilder.apiService.searchBusinesses(
+                        val business: BusinessesServiceClass = RetrofitBuilder.apiService.searchBusinesses(
                             lat,
                             lon,
                             radius,
                             sortBy,
                             limit
-                        )*/
-                        val resBody = RetrofitBuilder.apiService.searchBusinessesBody(
+                        )
+                        /*val resBody = RetrofitBuilder.apiService.searchBusinessesBody(
                             lat,
                             lon,
                             radius,
@@ -58,7 +59,7 @@ object MainRepository {
                                 Log.d(TAG, "onFailure: ${t.stackTrace}")
                             }
 
-                        })
+                        })*/
 
 //                        resBody.body()
 //                        resBody.code()
@@ -67,7 +68,7 @@ object MainRepository {
                             value = todos
                             it.complete()
                         }*/
-//                        postValue(business)
+                        postValue(business)
 //                        postValue(todos)
                         it.complete()
                     }
