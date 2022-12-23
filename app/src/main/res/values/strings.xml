@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Skycore</string>
+    <string name="radius_selector">Radius Selector</string>
+</resources>
