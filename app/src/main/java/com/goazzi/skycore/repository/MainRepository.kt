@@ -32,44 +32,19 @@ object MainRepository {
                 super.onActive()
                 job?.let {
                     CoroutineScope(IO + it).launch {
-//                        val todos: Todos = RetrofitBuilder.fakeApiService.getTodos(id)
-                        val business: BusinessesServiceClass = RetrofitBuilder.apiService.searchBusinesses(
-                            lat,
-                            lon,
-                            radius,
-                            sortBy,
-                            limit
-                        )
-                        /*val resBody = RetrofitBuilder.apiService.searchBusinessesBody(
-                            lat,
-                            lon,
-                            radius,
-                            sortBy,
-                            limit
-                        )
-                        resBody.enqueue(object : Callback<ResponseBody> {
-                            override fun onResponse(
-                                call: Call<ResponseBody>,
-                                response: Response<ResponseBody>
-                            ) {
-                                Log.d(TAG, "onResponse: ${response.body()?.string()}")
-                            }
-
-                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                Log.d(TAG, "onFailure: ${t.stackTrace}")
-                            }
-
-                        })*/
-
-//                        resBody.body()
-//                        resBody.code()
-//                        resBody.message()
+                        val business: BusinessesServiceClass =
+                            RetrofitBuilder.apiService.searchBusinesses(
+                                lat,
+                                lon,
+                                radius,
+                                sortBy,
+                                limit
+                            )
                         /*withContext(Main){
-                            value = todos
+                            value = business
                             it.complete()
                         }*/
                         postValue(business)
-//                        postValue(todos)
                         it.complete()
                     }
                 }

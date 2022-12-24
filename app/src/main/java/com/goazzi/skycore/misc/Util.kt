@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
+import java.util.Objects
 
 object Util {
 
@@ -31,6 +32,18 @@ object Util {
             Manifest.permission.ACCESS_COARSE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
         return fineLoc && coarseLoc
+    }
+
+    fun getStatus(isClosed: Boolean): String {
+        return if (isClosed) {
+            "Currently CLOSED"
+        } else {
+            "Currently OPEN"
+        }
+    }
+
+    fun getStringFromDouble(value: Double): String {
+        return value.toString()
     }
 
     private const val TAG = "Util"

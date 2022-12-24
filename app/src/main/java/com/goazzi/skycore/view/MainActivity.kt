@@ -1,6 +1,7 @@
 package com.goazzi.skycore.view
 
 import android.Manifest
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,17 +10,21 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.goazzi.skycore.adapter.RestaurantRecyclerAdapter
 import com.goazzi.skycore.databinding.ActivityMainBinding
 import com.goazzi.skycore.misc.Util
 import com.goazzi.skycore.model.Business
+import com.goazzi.skycore.model.BusinessesServiceClass
 import com.goazzi.skycore.model.SearchBusiness
 import com.goazzi.skycore.viewmodel.MainViewModel
 import com.goazzi.skycore.viewmodel.MainViewModelFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurantClickListener {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var businesses: Business
+    private lateinit var businesses: MutableList<Business>
+    private lateinit var recyclerAdapter: RestaurantRecyclerAdapter
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(
@@ -45,7 +50,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.businessServiceClass.observe(this) { business ->
-            Log.d(TAG, "onCreate: business: $business")
+            updateUI(business)
+//            Log.d(TAG, "onCreate: business: $business")
         }
 
         binding.sbRadiusSelector.setOnSeekBarChangeListener(object :
@@ -92,6 +98,22 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
         )*/
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun updateUI(businessServiceClass: BusinessesServiceClass) {
+        if (!this::recyclerAdapter.isInitialized) {
+            businesses = mutableListOf<Business>().apply { addAll(businessServiceClass.businesses) }
+            recyclerAdapter =
+                RestaurantRecyclerAdapter(applicationContext, businesses, this)
+            binding.rvRestaurants.adapter = recyclerAdapter
+            binding.rvRestaurants.layoutManager = LinearLayoutManager(applicationContext)
+            binding.rvRestaurants.setHasFixedSize(true)
+        } else {
+            businesses.clear()
+            businesses.addAll(businessServiceClass.businesses)
+            recyclerAdapter.notifyDataSetChanged()
+        }
     }
 
     private val permReqLauncher =
@@ -176,7 +198,16 @@ class MainActivity : AppCompatActivity() {
 //        attemptSocketConnection()
         }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.cancelJobs()
+    }
+
     companion object {
         private const val TAG = "MainActivity"
+    }
+
+    override fun onRestaurantClick(pos: Int) {
+        Toast.makeText(applicationContext, "Restaurant Clicked", Toast.LENGTH_SHORT).show()
     }
 }
