@@ -17,7 +17,8 @@ object MainRepository {
         lon: Double,
         radius: Int,
         sortBy: String,
-        limit: Int
+        limit: Int,
+        offset: Int
     ): LiveData<BusinessesServiceClass> {
         job = Job()
         return object : LiveData<BusinessesServiceClass>() {
@@ -31,7 +32,8 @@ object MainRepository {
                                 lon,
                                 radius,
                                 sortBy,
-                                limit
+                                limit,
+                                offset
                             )
                         withContext(Main){
                             value = business

@@ -12,7 +12,7 @@ class MainViewModel : ViewModel() {
     private val _searchBusiness: MutableLiveData<SearchBusiness> = MutableLiveData()
 
     val businessServiceClass = Transformations.switchMap(_searchBusiness) {
-        MainRepository.searchBusinesses(it.lat, it.lon, it.radius, it.sortBy, it.limit)
+        MainRepository.searchBusinesses(it.lat, it.lon, it.radius, it.sortBy, it.limit, it.offset)
     }
 
     fun setSearchBusiness(searchBusiness: SearchBusiness) {

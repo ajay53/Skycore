@@ -5,5 +5,6 @@ data class SearchBusiness(
     val lon: Double,
     val radius: Int,
     val sortBy: String,
-    val limit: Int
+    val limit: Int,
+    val offset:Int
 )

@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Skycore</string>
     <string name="radius_selector">Radius Selector</string>
+    <string name="location_permission_title">Need Location Access</string>
+    <string name="location_permission_desc">Please grant location permission to continue searching for restaurants.</string>
+    <string name="gps_permission_title">Need GPS Access</string>
+    <string name="gps_permission_desc">Please enable GPS to continue searching for restaurants.</string>
+    <string name="allow">Allow</string>
+    <string name="decline">Decline</string>
 </resources>

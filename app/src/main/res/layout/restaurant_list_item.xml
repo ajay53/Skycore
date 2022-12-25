@@ -18,6 +18,7 @@
         android:layout_marginTop="2dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="2dp"
+        android:backgroundTint="@color/white"
         app:cardCornerRadius="5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,6 +31,7 @@
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
                 app:cardCornerRadius="5dp"
+                android:backgroundTint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -93,27 +95,29 @@
                 android:id="@+id/cvRating"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_margin="5dp"
+                android:layout_marginEnd="10dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/holo_orange_dark"
+                    android:fontFamily="@font/rursus_compact_mono"
+                    android:gravity="center"
+                    android:text="@{String.valueOf(item.rating)}"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+                <!--<androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/holo_orange_dark">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/rursus_compact_mono"
-                        android:gravity="center"
-                        android:text="@{String.valueOf(item.rating)}"
-                        android:textColor="@color/white"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>-->
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

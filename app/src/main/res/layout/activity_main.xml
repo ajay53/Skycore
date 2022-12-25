@@ -4,10 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F8F8"
+    android:background="@color/background"
     tools:context=".view.MainActivity">
-    <!--    android:background="#F6F9FD"-->
-    <!--    android:background="#F9F5F8"-->
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvRadiusSelector"
@@ -33,7 +31,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/rursus_compact_mono"
-        android:text="1 KM"
+        android:text="100 M"
         android:textColor="@color/black"
         android:textSize="16dp"
         android:textStyle="bold"
@@ -58,7 +56,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:fontFamily="@font/rursus_compact_mono"
         android:text="100 M"
         android:textColor="@color/black"
@@ -74,7 +71,6 @@
         android:id="@+id/tvMaxRadius"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/rursus_compact_mono"
         android:text="5 KM"
@@ -122,14 +118,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvNearbyRestaurants"
         tools:listitem="@layout/restaurant_list_item" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnDum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dum Dum"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

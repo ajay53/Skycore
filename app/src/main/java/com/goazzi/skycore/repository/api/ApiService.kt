@@ -1,6 +1,5 @@
 package com.goazzi.skycore.repository.api
 
-import com.goazzi.skycore.model.Business
 import com.goazzi.skycore.model.BusinessesServiceClass
 import com.goazzi.skycore.model.Todos
 import okhttp3.ResponseBody
@@ -10,7 +9,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-
 interface ApiService {
     @GET("search")
     suspend fun searchBusinesses(
@@ -18,7 +16,8 @@ interface ApiService {
         @Query("longitude") lon: Double,
         @Query("radius") radius: Int,
         @Query("sort_by") sortBy: String,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
     ): BusinessesServiceClass
 
     @GET("search")
