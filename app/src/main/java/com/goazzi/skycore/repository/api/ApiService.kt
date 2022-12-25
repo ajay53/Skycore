@@ -26,8 +26,9 @@ interface ApiService {
         @Query("longitude") lon: Double,
         @Query("radius") radius: Int,
         @Query("sort_by") sortBy: String,
-        @Query("limit") limit: Int
-    ): Call<ResponseBody>
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
+    ): Response<BusinessesServiceClass>
 
     @GET("todos/{id}")
     suspend fun getTodosBody(@Path("id") id: Int): Response<Todos>

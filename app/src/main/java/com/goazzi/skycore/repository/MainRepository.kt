@@ -1,5 +1,6 @@
 package com.goazzi.skycore.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.goazzi.skycore.model.BusinessesServiceClass
 import com.goazzi.skycore.repository.api.RetrofitBuilder
@@ -26,7 +27,7 @@ object MainRepository {
                 super.onActive()
                 job?.let {
                     CoroutineScope(IO + it).launch {
-                        val business: BusinessesServiceClass =
+                        /*val business: BusinessesServiceClass =
                             RetrofitBuilder.apiService.searchBusinesses(
                                 lat,
                                 lon,
@@ -34,13 +35,28 @@ object MainRepository {
                                 sortBy,
                                 limit,
                                 offset
-                            )
-                        withContext(Main){
+                            )*/
+
+                        val resBody = RetrofitBuilder.apiService.searchBusinessesBody(
+                            lat,
+                            lon,
+                            radius,
+                            sortBy,
+                            limit,
+                            offset
+                        )
+                        val body = resBody.body().apply {
+                            this?.code = resBody.code()
+                            this?.message = resBody.message()
+                        }
+
+                        /*withContext(Main){
                             value = business
                             it.complete()
-                        }
-//                        postValue(business)
-//                        it.complete()
+                        }*/
+//                        postValue(resBody.body())
+                        postValue(body)
+                        it.complete()
                     }
                 }
             }

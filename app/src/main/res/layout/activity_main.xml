@@ -61,7 +61,7 @@
         android:textColor="@color/black"
         android:textSize="12dp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@+id/separator"
+        app:layout_constraintBottom_toTopOf="@+id/tvLocationSwitch"
         app:layout_constraintEnd_toStartOf="@+id/tvMaxRadius"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,10 +77,37 @@
         android:textColor="@color/black"
         android:textSize="12dp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@+id/separator"
+        app:layout_constraintBottom_toTopOf="@+id/tvLocationSwitch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvMinRadius"
         app:layout_constraintTop_toBottomOf="@+id/sbRadiusSelector" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvLocationSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/rursus_compact_mono"
+        android:text="Location: Current"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/separator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMinRadius" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/swLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        style="@style/MySwitch"
+        android:backgroundTint="@android:color/holo_red_light"
+        app:layout_constraintBottom_toBottomOf="@id/tvLocationSwitch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvLocationSwitch" />
 
     <View
         android:id="@+id/separator"
@@ -90,7 +117,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:background="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@+id/tvMinRadius" />
+        app:layout_constraintTop_toBottomOf="@+id/tvLocationSwitch" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvNearbyRestaurants"

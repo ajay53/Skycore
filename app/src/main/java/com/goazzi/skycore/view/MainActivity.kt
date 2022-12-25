@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
     private lateinit var businesses: MutableList<Business>
     private lateinit var recyclerAdapter: RestaurantRecyclerAdapter
     private var isLoading: Boolean = false
+    private var isLastPage: Boolean = false
     private var radius: Int = 100
     private var resetData: Boolean = false
     private val locHandler = HandlerThread("location")
@@ -68,7 +69,21 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         viewModel.businessServiceClass.observe(this) { business ->
             isLoading = false
             binding.progressBar.hide()
-            updateUI(business)
+            /*business?.let {
+
+                return@observe
+            }*/
+            if (business == null || business.code != 200) {
+                if (business != null && business.message.isNotBlank()) {
+                    Toast.makeText(applicationContext, business.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
+                binding.ivNoRestaurant.visibility = View.VISIBLE
+                binding.tvNoRestaurant.visibility = View.VISIBLE
+            } else {
+                updateUI(business)
+            }
+
 //            Log.d(TAG, "onCreate: business: $business")
         }
 
@@ -89,6 +104,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         stopLocationUpdates()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initViews() {
         binding.sbRadiusSelector.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
@@ -124,20 +140,24 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 binding.tvNoRestaurant.visibility = View.GONE
                 resetData = true
                 isLoading = true
-                val searchBusiness =
+                isLastPage = false
+                val searchBusiness = if (binding.swLocation.isChecked) {
                     SearchBusiness(
                         40.730610,
                         -73.935242,
                         radius,
-                        Enum.SortByEnum.BEST_MATCH.type,
+                        Enum.SortBy.BEST_MATCH.type,
                         Constants.PAGE_LIMIT,
                         0
                     )
-                /*val searchBusiness =
+                } else {
                     SearchBusiness(
-                        lat, lon, 1000, SortByEnum.BEST_MATCH.type, Constants.PAGE_LIMIT,
+                        lat, lon, radius, Enum.SortBy.BEST_MATCH.type, Constants.PAGE_LIMIT,
                         0
-                    )*/
+                    )
+                }
+
+
                 viewModel.setSearchBusiness(searchBusiness)
             }
 
@@ -153,19 +173,42 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             }
         })
 
+        binding.swLocation.setOnCheckedChangeListener { _, isChecked ->
+            binding.tvLocationSwitch.text = if (isChecked) {
+                "Location: NYC"
+            } else {
+                "Location: Current"
+            }
+            if (this::businesses.isInitialized) {
+                businesses.clear()
+            }
+            if (this::recyclerAdapter.isInitialized) {
+                recyclerAdapter.notifyDataSetChanged()
+            }
+            resetData = true
+            isLoading = false
+            isLastPage = false
+            binding.sbRadiusSelector.progress = 0
+            binding.ivNoRestaurant.visibility = View.GONE
+            binding.tvNoRestaurant.visibility = View.GONE
+            viewModel.cancelJobs()
+            binding.progressBar.hide()
+        }
+
         binding.rvRestaurants.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             @Override
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager: LinearLayoutManager =
                     recyclerView.layoutManager as LinearLayoutManager
-                /*
+
                 val visibleItemCount: Int = layoutManager.childCount
                 val totalItemCount: Int = layoutManager.itemCount
-                val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()*/
+                val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
                 val lastVisibleItemPosition: Int = layoutManager.findLastVisibleItemPosition()
 
-                if (!isLoading && lastVisibleItemPosition == businesses.size - 1) {
+//                if (!isLoading && lastVisibleItemPosition == businesses.size - 1) {
+                if (!isLoading && !isLastPage && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
 
                     //return if permission is not granted
                     if (!arePermissionsEnabled()) {
@@ -180,20 +223,21 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                     resetData = false
                     isLoading = true
 
-                    val searchBusiness =
+                    val searchBusiness = if (binding.swLocation.isChecked) {
                         SearchBusiness(
                             40.730610,
                             -73.935242,
                             radius,
-                            Enum.SortByEnum.BEST_MATCH.type,
+                            Enum.SortBy.BEST_MATCH.type,
                             Constants.PAGE_LIMIT,
                             businesses.size
                         )
-                    /*val searchBusiness =
+                    } else {
                         SearchBusiness(
-                            lat, lon, radius, SortByEnum.BEST_MATCH.type, Constants.PAGE_LIMIT,
+                            lat, lon, radius, Enum.SortBy.BEST_MATCH.type, Constants.PAGE_LIMIT,
                             businesses.size
-                        )*/
+                        )
+                    }
 
                     viewModel.setSearchBusiness(searchBusiness)
                 }
@@ -203,13 +247,13 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 
     private fun askPermissions() {
         if (!Util.isGpsEnabled(applicationContext)) {
-            showLocationPermissionDialog(Enum.PermissionEnum.GPS)
+            showLocationPermissionDialog(Enum.Permission.GPS)
 //            gpsReqLauncher.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
 //            return false
         }
 
         if (!Util.hasLocationPermission(applicationContext)) {
-            showLocationPermissionDialog(Enum.PermissionEnum.LOCATION)
+            showLocationPermissionDialog(Enum.Permission.LOCATION)
 //            permReqLauncher.launch(
 //                arrayOf(
 //                    //                    Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -234,6 +278,9 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             "count: ${businessServiceClass.businesses.count()}",
             Toast.LENGTH_SHORT
         ).show()*/
+        if (businessServiceClass.businesses.size < Constants.PAGE_LIMIT) {
+            isLastPage = true
+        }
         if (!this::recyclerAdapter.isInitialized) {
             businesses = mutableListOf<Business>().apply { addAll(businessServiceClass.businesses) }
             recyclerAdapter =
@@ -301,7 +348,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 //                            .show()
                     } else {
                         binding.sbRadiusSelector.progress = 0
-                        showLocationPermissionDialog(Enum.PermissionEnum.LOCATION)
+                        showLocationPermissionDialog(Enum.Permission.LOCATION)
 //                        Toast.makeText(applicationContext, "fine Loc not", Toast.LENGTH_SHORT)
 //                            .show()
                     }
@@ -317,7 +364,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             }
         }
 
-    private fun showLocationPermissionDialog(permissionEnum: Enum.PermissionEnum) {
+    private fun showLocationPermissionDialog(permission: Enum.Permission) {
         val alertBinding: DialogLocationRequestBinding =
             DialogLocationRequestBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
@@ -326,12 +373,12 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 
 //        builder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        when (permissionEnum) {
-            Enum.PermissionEnum.GPS -> {
+        when (permission) {
+            Enum.Permission.GPS -> {
                 alertBinding.tvTitle.text = getString(R.string.gps_permission_title)
                 alertBinding.tvDesc.text = getString(R.string.gps_permission_desc)
             }
-            Enum.PermissionEnum.LOCATION -> {
+            Enum.Permission.LOCATION -> {
                 alertBinding.tvTitle.text = getString(R.string.location_permission_title)
                 alertBinding.tvDesc.text = getString(R.string.location_permission_desc)
             }
@@ -340,11 +387,11 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         alertBinding.tvConfirm.setOnClickListener {
             builder.dismiss()
 //            Toast.makeText(applicationContext, "confirm", Toast.LENGTH_SHORT).show()
-            when (permissionEnum) {
-                Enum.PermissionEnum.GPS -> {
+            when (permission) {
+                Enum.Permission.GPS -> {
                     gpsReqLauncher.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 }
-                Enum.PermissionEnum.LOCATION -> {
+                Enum.Permission.LOCATION -> {
                     permReqLauncher.launch(
                         arrayOf(
                             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -433,7 +480,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
     }
 
     override fun onRestaurantClick(pos: Int) {
-        Toast.makeText(applicationContext, "Restaurant Clicked", Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, businesses[pos].name, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {
@@ -444,6 +491,4 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
     companion object {
         private const val TAG = "MainActivity"
     }
-
-
 }

@@ -24,6 +24,10 @@ class MainViewModel : ViewModel() {
     fun cancelJobs() {
         MainRepository.cancelJobs()
     }
+
+    companion object {
+        private const val TAG = "MainViewModel"
+    }
 }
 
 class MainViewModelFactory() : ViewModelProvider.Factory {

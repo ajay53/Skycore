@@ -5,16 +5,19 @@ import okhttp3.Dns
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 //import retrofit2.converter.moshi.MoshiConverterFactory
 
 object RetrofitBuilder {
 
-//    private const val BASE_URL: String = "https://jsonplaceholder.typicode.com/"
+    //    private const val BASE_URL: String = "https://jsonplaceholder.typicode.com/"
     private const val BASE_URL: String = Constants.BUSINESS_URL
 
     private val mOkHttpClient: OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(AddHeaderInterceptor())
+        .readTimeout(3, TimeUnit.SECONDS)
+        .connectTimeout(3, TimeUnit.SECONDS)
         .build()
 
     private val retrofitBuilder: Retrofit.Builder by lazy {
