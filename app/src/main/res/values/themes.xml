@@ -17,4 +17,10 @@
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/curved_background</item>
     </style>
+
+    <style name="MySeekBar" parent="Widget.AppCompat.SeekBar.Discrete">
+        <item name="android:progressBackgroundTint">@android:color/holo_red_dark</item>
+        <item name="android:progressTint">@android:color/holo_red_light</item>
+        <item name="android:thumbTint">@android:color/darker_gray</item>
+    </style>
 </resources>

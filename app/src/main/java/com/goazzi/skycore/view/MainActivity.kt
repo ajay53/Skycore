@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 
         viewModel.businessServiceClass.observe(this) { business ->
             isLoading = false
+            binding.progressBar.hide()
             updateUI(business)
 //            Log.d(TAG, "onCreate: business: $business")
         }
@@ -78,7 +79,9 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 
     override fun onResume() {
         super.onResume()
-        startLocationUpdates()
+        if (arePermissionsEnabled()) {
+            startLocationUpdates()
+        }
     }
 
     override fun onPause() {
@@ -116,6 +119,9 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                     }
 
                 //call api
+                binding.progressBar.show()
+                binding.ivNoRestaurant.visibility = View.GONE
+                binding.tvNoRestaurant.visibility = View.GONE
                 resetData = true
                 isLoading = true
                 val searchBusiness =
@@ -168,6 +174,12 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                     }
 
                     //call api
+                    binding.progressBar.show()
+                    binding.ivNoRestaurant.visibility = View.GONE
+                    binding.tvNoRestaurant.visibility = View.GONE
+                    resetData = false
+                    isLoading = true
+
                     val searchBusiness =
                         SearchBusiness(
                             40.730610,
@@ -183,8 +195,6 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                             businesses.size
                         )*/
 
-                    resetData = false
-                    isLoading = true
                     viewModel.setSearchBusiness(searchBusiness)
                 }
             }
@@ -284,7 +294,9 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 }*/
                 if (entry.key == Manifest.permission.ACCESS_FINE_LOCATION) {
                     if (entry.value) {
-                        startLocationUpdates()
+                        if (arePermissionsEnabled()) {
+                            startLocationUpdates()
+                        }
 //                        Toast.makeText(applicationContext, "fine Loc granted", Toast.LENGTH_SHORT)
 //                            .show()
                     } else {
@@ -406,13 +418,6 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
         fusedLocationClient.requestLocationUpdates(
