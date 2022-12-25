@@ -5,7 +5,12 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.util.Log
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
+import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.goazzi.skycore.R
 import java.util.Objects
 
 object Util {
@@ -42,8 +47,16 @@ object Util {
         }
     }
 
-    fun getStringFromDouble(value: Double): String {
-        return value.toString()
+    @BindingAdapter("imageAdapter")
+    @JvmStatic
+    fun setImageResource(view: AppCompatImageView, imageUrl: String) {
+        val context: Context = view.context
+
+        val options: RequestOptions = RequestOptions()
+            .placeholder(R.drawable.ic_launcher_foreground)
+            .error(R.drawable.ic_launcher_foreground)
+
+        Glide.with(context).setDefaultRequestOptions(options).load(imageUrl).into(view)
     }
 
     private const val TAG = "Util"

@@ -4,19 +4,19 @@
 
     <data>
 
+        <import type="com.goazzi.skycore.misc.Util" />
+
         <variable
             name="item"
             type="com.goazzi.skycore.model.Business" />
-
-        <variable
-            name="util"
-            type="com.goazzi.skycore.misc.Util" />
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="2dp"
         app:cardCornerRadius="5dp">
 
@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
+                    app:imageAdapter="@{item.imageURL}" />
             </androidx.cardview.widget.CardView>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/rursus_compact_mono"
-                android:text="@{util.INSTANCE.getStatus(item.isClosed)}"
+                android:text="@{Util.INSTANCE.getStatus(item.isClosed)}"
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 android:textStyle="normal"
@@ -109,7 +109,7 @@
                         android:layout_height="match_parent"
                         android:fontFamily="@font/rursus_compact_mono"
                         android:gravity="center"
-                        android:text="@{util.INSTANCE.getStringFromDouble(item.rating)}"
+                        android:text="@{String.valueOf(item.rating)}"
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:textStyle="bold" />

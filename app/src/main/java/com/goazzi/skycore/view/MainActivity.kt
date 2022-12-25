@@ -102,6 +102,11 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 
     @SuppressLint("NotifyDataSetChanged")
     private fun updateUI(businessServiceClass: BusinessesServiceClass) {
+        /*Toast.makeText(
+            applicationContext,
+            "count: ${businessServiceClass.businesses.count()}",
+            Toast.LENGTH_SHORT
+        ).show()*/
         if (!this::recyclerAdapter.isInitialized) {
             businesses = mutableListOf<Business>().apply { addAll(businessServiceClass.businesses) }
             recyclerAdapter =

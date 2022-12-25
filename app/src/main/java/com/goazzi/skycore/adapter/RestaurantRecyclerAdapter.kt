@@ -45,6 +45,7 @@ class RestaurantRecyclerAdapter(
 
         init {
             this.binding = binding
+            this.binding.root.setOnClickListener(this)
         }
 
         fun bind(business: Business) {
