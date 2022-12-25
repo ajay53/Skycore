@@ -118,4 +118,35 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvNearbyRestaurants"
         tools:listitem="@layout/restaurant_list_item" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivNoRestaurant"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_restaurant"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/tvNoRestaurant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:tint="@android:color/darker_gray" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNoRestaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rursus_compact_mono"
+        android:gravity="center"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="No Restaurants Found,\n Maybe increase the search radius?"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivNoRestaurant" />
 </androidx.constraintlayout.widget.ConstraintLayout>

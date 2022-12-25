@@ -3,8 +3,12 @@ package com.goazzi.skycore.view
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.os.HandlerThread
 import android.provider.Settings
+import android.view.View
 import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.Toast
@@ -12,6 +16,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,14 +24,14 @@ import com.goazzi.skycore.R
 import com.goazzi.skycore.adapter.RestaurantRecyclerAdapter
 import com.goazzi.skycore.databinding.ActivityMainBinding
 import com.goazzi.skycore.databinding.DialogLocationRequestBinding
-import com.goazzi.skycore.misc.Constants
-import com.goazzi.skycore.misc.PermissionType
-import com.goazzi.skycore.misc.Util
+import com.goazzi.skycore.misc.*
+import com.goazzi.skycore.misc.Enum
 import com.goazzi.skycore.model.Business
 import com.goazzi.skycore.model.BusinessesServiceClass
 import com.goazzi.skycore.model.SearchBusiness
 import com.goazzi.skycore.viewmodel.MainViewModel
 import com.goazzi.skycore.viewmodel.MainViewModelFactory
+import com.google.android.gms.location.*
 import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurantClickListener {
@@ -37,6 +42,12 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
     private var isLoading: Boolean = false
     private var radius: Int = 100
     private var resetData: Boolean = false
+    private val locHandler = HandlerThread("location")
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var locationRequest: LocationRequest
+    private var lat: Double = 0.0
+    private var lon: Double = 0.0
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(
@@ -61,45 +72,18 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         }
 
         initViews()
-
         askPermissions()
-        /*requestMultiplePermissions.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.CAMERA,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
-        )*/
+        createLocationRequest()
     }
 
-    private fun askPermissions() {
-        if (!Util.isGpsEnabled(applicationContext)) {
-            showLocationPermissionDialog(PermissionType.GPS)
-//            gpsReqLauncher.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-//            return false
-        }
-
-        if (!Util.hasLocationPermission(applicationContext)) {
-            showLocationPermissionDialog(PermissionType.LOCATION)
-//            permReqLauncher.launch(
-//                arrayOf(
-//                    //                    Manifest.permission.ACCESS_COARSE_LOCATION,
-//                    Manifest.permission.ACCESS_FINE_LOCATION
-//                )
-//            )
-//            return false
-        }
-//        return true
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
     }
 
-    private fun arePermissionsEnabled(): Boolean {
-        return (Util.isGpsEnabled(applicationContext) && Util.hasLocationPermission(
-            applicationContext
-        ))
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
     }
 
     private fun initViews() {
@@ -107,6 +91,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
 
+                //return if permission is not granted
                 if (!arePermissionsEnabled()) {
                     binding.sbRadiusSelector.progress = 0
                     return
@@ -130,10 +115,6 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                         "$radius M"
                     }
 
-                /*if (!arePermissionsEnabled()) {
-                    return
-                }*/
-
                 //call api
                 resetData = true
                 isLoading = true
@@ -142,11 +123,15 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                         40.730610,
                         -73.935242,
                         radius,
-                        "best_match",
+                        Enum.SortByEnum.BEST_MATCH.type,
                         Constants.PAGE_LIMIT,
                         0
                     )
-                //                SearchBusiness(18.61014312183422, 73.78609507664633, 1000, "best_match", 15)
+                /*val searchBusiness =
+                    SearchBusiness(
+                        lat, lon, 1000, SortByEnum.BEST_MATCH.type, Constants.PAGE_LIMIT,
+                        0
+                    )*/
                 viewModel.setSearchBusiness(searchBusiness)
             }
 
@@ -176,6 +161,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 
                 if (!isLoading && lastVisibleItemPosition == businesses.size - 1) {
 
+                    //return if permission is not granted
                     if (!arePermissionsEnabled()) {
                         askPermissions()
                         return
@@ -187,11 +173,15 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                             40.730610,
                             -73.935242,
                             radius,
-                            "best_match",
+                            Enum.SortByEnum.BEST_MATCH.type,
                             Constants.PAGE_LIMIT,
                             businesses.size
                         )
-                    //                SearchBusiness(18.61014312183422, 73.78609507664633, 1000, "best_match", 15)
+                    /*val searchBusiness =
+                        SearchBusiness(
+                            lat, lon, radius, SortByEnum.BEST_MATCH.type, Constants.PAGE_LIMIT,
+                            businesses.size
+                        )*/
 
                     resetData = false
                     isLoading = true
@@ -199,6 +189,32 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 }
             }
         })
+    }
+
+    private fun askPermissions() {
+        if (!Util.isGpsEnabled(applicationContext)) {
+            showLocationPermissionDialog(Enum.PermissionEnum.GPS)
+//            gpsReqLauncher.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+//            return false
+        }
+
+        if (!Util.hasLocationPermission(applicationContext)) {
+            showLocationPermissionDialog(Enum.PermissionEnum.LOCATION)
+//            permReqLauncher.launch(
+//                arrayOf(
+//                    //                    Manifest.permission.ACCESS_COARSE_LOCATION,
+//                    Manifest.permission.ACCESS_FINE_LOCATION
+//                )
+//            )
+//            return false
+        }
+//        return true
+    }
+
+    private fun arePermissionsEnabled(): Boolean {
+        return (Util.isGpsEnabled(applicationContext) && Util.hasLocationPermission(
+            applicationContext
+        ))
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -215,12 +231,42 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             binding.rvRestaurants.adapter = recyclerAdapter
             binding.rvRestaurants.layoutManager = LinearLayoutManager(applicationContext)
             binding.rvRestaurants.setHasFixedSize(true)
+
+            /*if (businesses.isEmpty()) {
+                binding.ivNoRestaurant.visibility = View.VISIBLE
+                binding.tvNoRestaurant.visibility = View.VISIBLE
+                binding.rvRestaurants.visibility = View.GONE
+            } else {
+                binding.ivNoRestaurant.visibility = View.GONE
+                binding.tvNoRestaurant.visibility = View.GONE
+                binding.rvRestaurants.visibility = View.VISIBLE
+            }*/
         } else {
+            //reset list in case of radius change, else append list(pagination)
             if (resetData) {
                 businesses.clear()
             }
             businesses.addAll(businessServiceClass.businesses)
             recyclerAdapter.notifyDataSetChanged()
+
+            /*if (businesses.isEmpty()) {
+                binding.ivNoRestaurant.visibility = View.VISIBLE
+                binding.tvNoRestaurant.visibility = View.VISIBLE
+                binding.rvRestaurants.visibility = View.GONE
+            } else {
+                binding.ivNoRestaurant.visibility = View.GONE
+                binding.tvNoRestaurant.visibility = View.GONE
+                binding.rvRestaurants.visibility = View.VISIBLE
+            }*/
+        }
+        if (businesses.isEmpty()) {
+            binding.ivNoRestaurant.visibility = View.VISIBLE
+            binding.tvNoRestaurant.visibility = View.VISIBLE
+            binding.rvRestaurants.visibility = View.GONE
+        } else {
+            binding.ivNoRestaurant.visibility = View.GONE
+            binding.tvNoRestaurant.visibility = View.GONE
+            binding.rvRestaurants.visibility = View.VISIBLE
         }
     }
 
@@ -238,54 +284,28 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 }*/
                 if (entry.key == Manifest.permission.ACCESS_FINE_LOCATION) {
                     if (entry.value) {
-                        Toast.makeText(applicationContext, "fine Loc granted", Toast.LENGTH_SHORT)
-                            .show()
+                        startLocationUpdates()
+//                        Toast.makeText(applicationContext, "fine Loc granted", Toast.LENGTH_SHORT)
+//                            .show()
                     } else {
                         binding.sbRadiusSelector.progress = 0
-                        showLocationPermissionDialog(PermissionType.LOCATION)
+                        showLocationPermissionDialog(Enum.PermissionEnum.LOCATION)
 //                        Toast.makeText(applicationContext, "fine Loc not", Toast.LENGTH_SHORT)
 //                            .show()
                     }
                 }
-                /*if (!entry.value) {
-                    when (entry.key) {
-                        Manifest.permission.ACCESS_COARSE_LOCATION -> {
-                            Toast.makeText(applicationContext, "coarse Loc", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        Manifest.permission.ACCESS_FINE_LOCATION -> {
-
-                        }
-                    }
-                }*/
             }
-            /*val granted = permissions.entries.all {
-                it.value
-            }
-            if (granted) {
-//            val menuView = navView[0] as BottomNavigationMenuView
-//            menuView.children.elementAt(0).performClick()
-//            Util.setClickedMenuItemId(Util.BottomNavigationMenuItemIds.EXPLORE_NAV_MENU)
-            } else {
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                intent.addCategory(Intent.CATEGORY_DEFAULT);
-                intent.data = Uri.parse("package:" + applicationContext.packageName);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                startActivity(intent)
-            }*/
         }
 
     private val gpsReqLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             //check for gps access
-            /*if(!Util.isGpsEnabled(applicationContext)){
-
-            }*/
+            if (arePermissionsEnabled()) {
+                startLocationUpdates()
+            }
         }
 
-    private fun showLocationPermissionDialog(permissionType: PermissionType) {
+    private fun showLocationPermissionDialog(permissionEnum: Enum.PermissionEnum) {
         val alertBinding: DialogLocationRequestBinding =
             DialogLocationRequestBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
@@ -294,12 +314,12 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 
 //        builder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        when (permissionType) {
-            PermissionType.GPS -> {
+        when (permissionEnum) {
+            Enum.PermissionEnum.GPS -> {
                 alertBinding.tvTitle.text = getString(R.string.gps_permission_title)
                 alertBinding.tvDesc.text = getString(R.string.gps_permission_desc)
             }
-            PermissionType.LOCATION -> {
+            Enum.PermissionEnum.LOCATION -> {
                 alertBinding.tvTitle.text = getString(R.string.location_permission_title)
                 alertBinding.tvDesc.text = getString(R.string.location_permission_desc)
             }
@@ -308,14 +328,14 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         alertBinding.tvConfirm.setOnClickListener {
             builder.dismiss()
 //            Toast.makeText(applicationContext, "confirm", Toast.LENGTH_SHORT).show()
-            when (permissionType) {
-                PermissionType.GPS -> {
+            when (permissionEnum) {
+                Enum.PermissionEnum.GPS -> {
                     gpsReqLauncher.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 }
-                PermissionType.LOCATION -> {
+                Enum.PermissionEnum.LOCATION -> {
                     permReqLauncher.launch(
                         arrayOf(
-                            //                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
                             Manifest.permission.ACCESS_FINE_LOCATION
                         )
                     )
@@ -338,6 +358,73 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         val dialogWidth: Int = (Util.getScreenWidth(this) * 0.8f).toInt()
         layoutParams.width = dialogWidth
         builder.window?.attributes = layoutParams
+    }
+
+    private fun createLocationRequest() {
+        locationRequest = LocationRequest.Builder(
+            Priority.PRIORITY_HIGH_ACCURACY,
+            Constants.UPDATE_INTERVAL_IN_MILLISECONDS
+        ).build()
+
+        // Sets the desired interval for active location updates. This interval is
+        // inexact. You may not receive updates at all if no location sources are available, or
+        // you may receive them slower than requested. You may also receive updates faster than
+        // requested if other applications are requesting location at a faster interval.
+
+        // Sets the fastest rate for active location updates. This interval is exact, and your
+        // application will never receive updates faster than this value.
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext)
+        locationCallback = object : LocationCallback() {
+            //NOT EXECUTING WHEN APP IS IN BACKGROUND
+            //added foregaround service for this
+            override fun onLocationResult(locationResult: LocationResult) {
+
+                val currLocation: Location? = locationResult.lastLocation
+                currLocation?.let {
+                    lat = currLocation.latitude
+                    lon = currLocation.longitude
+                    /*Log.d(
+                        TAG,
+                        "onLocationResult: lat: ${currLocation.latitude} || Lon: ${currLocation.longitude}"
+                    )*/
+                }
+            }
+        }
+    }
+
+    private fun startLocationUpdates() {
+        if (!locHandler.isAlive) {
+            locHandler.start()
+        }
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            locHandler.looper
+        )
+//        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
     override fun onRestaurantClick(pos: Int) {
