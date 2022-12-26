@@ -24,6 +24,7 @@ import com.goazzi.skycore.R
 
 object Util {
 
+    //checking for GPS
     fun isGpsEnabled(context: Context): Boolean {
         val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         var isGpsEnabled = false
@@ -36,6 +37,7 @@ object Util {
         return isGpsEnabled
     }
 
+    //checking for locatin permission
     fun hasLocationPermission(context: Context): Boolean {
         val fineLoc: Boolean = ActivityCompat.checkSelfPermission(
             context,
@@ -48,6 +50,7 @@ object Util {
         return fineLoc && coarseLoc
     }
 
+    //setting and styling status of restaurant
     @JvmStatic
     @BindingAdapter("statusAdapter")
     fun setStatus(view: AppCompatTextView, isClosed: Boolean) {
@@ -92,6 +95,7 @@ object Util {
         Glide.with(context).setDefaultRequestOptions(options).load(imageUrl).into(view)
     }
 
+    //setting and styling rating of restaurant
     @JvmStatic
     @BindingAdapter("ratingAdapter")
     fun setRating(view: AppCompatTextView, rating: Double) {

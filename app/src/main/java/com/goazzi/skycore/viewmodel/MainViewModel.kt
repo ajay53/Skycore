@@ -23,6 +23,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun cancelJobs() {
+        //cancel pending operations if need be
         MainRepository.cancelJobs()
     }
 

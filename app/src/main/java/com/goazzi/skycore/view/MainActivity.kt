@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         viewModel.businessServiceClass.observe(this) { business ->
             isLoading = false
             binding.progressBar.hide()
+            //handling response code
             if (business == null || business.code != 200) {
                 if (business != null && business.message.isNotBlank()) {
                     Toast.makeText(applicationContext, business.message, Toast.LENGTH_SHORT)
@@ -111,6 +112,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                     return
                 }
 
+                //keeping the min radius as 100
                 radius = when (p1) {
                     0 -> {
                         100
@@ -136,6 +138,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 resetData = true
                 isLoading = true
                 isLastPage = false
+                //using location as per switch
                 val searchBusiness = if (binding.swLocation.isChecked) {
                     SearchBusiness(
                         40.730610,
@@ -156,6 +159,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
+                //ask for permissions if not granted
                 if (!arePermissionsEnabled()) {
                     askPermissions()
                     binding.sbRadiusSelector.progress = 0
@@ -168,6 +172,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         })
 
         binding.swLocation.setOnCheckedChangeListener { _, isChecked ->
+            //resetting views on switch change
             binding.tvLocationSwitch.text = if (isChecked) {
                 "Location: NYC"
             } else {
@@ -201,6 +206,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
                 val lastVisibleItemPosition: Int = layoutManager.findLastVisibleItemPosition()
 
+                //checking for last element and calling api
 //                if (!isLoading && lastVisibleItemPosition == businesses.size - 1) {
                 if (!isLoading && !isLastPage && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
 
@@ -217,6 +223,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                     resetData = false
                     isLoading = true
 
+                    //using location as per switch
                     val searchBusiness = if (binding.swLocation.isChecked) {
                         SearchBusiness(
                             40.730610,
@@ -246,6 +253,8 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             resetData = true
             isLoading = true
             isLastPage = false
+
+            //using location as per switch
             val searchBusiness = if (binding.swLocation.isChecked) {
                 SearchBusiness(
                     40.730610,
@@ -283,10 +292,12 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 
     @SuppressLint("NotifyDataSetChanged")
     private fun updateUI(businessServiceClass: BusinessesServiceClass) {
+
         binding.swipeRefreshLayout.isRefreshing = false
         if (businessServiceClass.businesses.size < Constants.PAGE_LIMIT) {
             isLastPage = true
         }
+
         if (!this::recyclerAdapter.isInitialized) {
             businesses = mutableListOf<Business>().apply { addAll(businessServiceClass.businesses) }
             recyclerAdapter =
@@ -295,7 +306,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             binding.rvRestaurants.layoutManager = LinearLayoutManager(applicationContext)
             binding.rvRestaurants.setHasFixedSize(true)
         } else {
-            //reset list in case of radius change, else append list(pagination)
+            //reset list in case of radius change, else append list - (pagination)
             if (resetData) {
                 businesses.clear()
             }
@@ -321,13 +332,9 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                         if (arePermissionsEnabled()) {
                             startLocationUpdates()
                         }
-//                        Toast.makeText(applicationContext, "fine Loc granted", Toast.LENGTH_SHORT)
-//                            .show()
                     } else {
                         binding.sbRadiusSelector.progress = 0
                         showLocationPermissionDialog(Enum.Permission.LOCATION)
-//                        Toast.makeText(applicationContext, "fine Loc not", Toast.LENGTH_SHORT)
-//                            .show()
                     }
                 }
             }

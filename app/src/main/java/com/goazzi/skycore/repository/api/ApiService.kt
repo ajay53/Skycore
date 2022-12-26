@@ -1,12 +1,8 @@
 package com.goazzi.skycore.repository.api
 
 import com.goazzi.skycore.model.BusinessesServiceClass
-import com.goazzi.skycore.model.Todos
-import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -29,7 +25,4 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
     ): Response<BusinessesServiceClass>
-
-    @GET("todos/{id}")
-    suspend fun getTodosBody(@Path("id") id: Int): Response<Todos>
 }

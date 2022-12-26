@@ -1,7 +1,6 @@
 package com.goazzi.skycore.repository.api
 
 import com.goazzi.skycore.misc.Constants
-import okhttp3.Dns
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

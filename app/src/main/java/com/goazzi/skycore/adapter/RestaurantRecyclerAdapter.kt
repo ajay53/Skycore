@@ -50,7 +50,6 @@ class RestaurantRecyclerAdapter(
 
         fun bind(business: Business) {
             binding.setVariable(BR.item, business)
-//            binding.item = business
             binding.executePendingBindings()
         }
 
