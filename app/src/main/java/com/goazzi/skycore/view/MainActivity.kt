@@ -157,7 +157,6 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                     )
                 }
 
-
                 viewModel.setSearchBusiness(searchBusiness)
             }
 
@@ -370,8 +369,6 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
             .create()
         builder.setView(alertBinding.root)
-
-//        builder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         when (permission) {
             Enum.Permission.GPS -> {

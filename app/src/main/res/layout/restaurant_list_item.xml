@@ -83,15 +83,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/rursus_compact_mono"
-                android:text="@{Util.INSTANCE.getStatus(item.isClosed)}"
+
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 android:textStyle="normal"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toStartOf="@+id/cvRating"
                 app:layout_constraintStart_toEndOf="@+id/cvIcon"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddress" />
-
+                app:layout_constraintTop_toBottomOf="@+id/tvAddress"
+                app:statusAdapter="@{item.isClosed}" />
+<!--            android:text="@{Util.INSTANCE.getStatus(item.isClosed)}"-->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvRating"
                 android:layout_width="40dp"
@@ -108,9 +109,9 @@
                     android:background="@android:color/holo_orange_dark"
                     android:fontFamily="@font/rursus_compact_mono"
                     android:gravity="center"
-                    android:text="@{String.valueOf(item.rating)}"
                     android:textColor="@color/white"
                     android:textSize="16dp"
+                    app:ratingAdapter="@{item.rating}"
                     android:textStyle="bold" />
                 <!--<androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

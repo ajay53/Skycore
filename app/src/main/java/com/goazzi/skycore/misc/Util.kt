@@ -7,16 +7,20 @@ import android.content.pm.PackageManager
 import android.graphics.Insets
 import android.location.LocationManager
 import android.os.Build
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.WindowInsets
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.goazzi.skycore.R
-import java.util.Objects
 
 object Util {
 
@@ -44,16 +48,40 @@ object Util {
         return fineLoc && coarseLoc
     }
 
-    fun getStatus(isClosed: Boolean): String {
-        return if (isClosed) {
+    @JvmStatic
+    @BindingAdapter("statusAdapter")
+    fun setStatus(view: AppCompatTextView, isClosed: Boolean) {
+        val status = if (isClosed) {
             "Currently CLOSED"
         } else {
             "Currently OPEN"
         }
+
+        val spannable = SpannableString(status)
+        spannable.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.black)),
+            0, 9,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        if (isClosed) {
+            spannable.setSpan(
+                ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.holo_red_dark)),
+                9, status.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        } else {
+            spannable.setSpan(
+                ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.holo_green_dark)),
+                9, status.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        view.text = spannable
     }
 
-    @BindingAdapter("imageAdapter")
     @JvmStatic
+    @BindingAdapter("imageAdapter")
     fun setImageResource(view: AppCompatImageView, imageUrl: String) {
         val context: Context = view.context
 
@@ -62,6 +90,21 @@ object Util {
             .error(R.drawable.ic_restaurant)
 
         Glide.with(context).setDefaultRequestOptions(options).load(imageUrl).into(view)
+    }
+
+    @JvmStatic
+    @BindingAdapter("ratingAdapter")
+    fun setRating(view: AppCompatTextView, rating: Double) {
+
+        val colorId: Int = when {
+            rating > 4.5 -> R.color.holo_green_dark
+            rating > 4.0 -> R.color.yellow
+            rating > 3.5 -> R.color.holo_orange_dark
+            else -> R.color.holo_red_dark
+        }
+
+        view.text = rating.toString()
+        view.setBackgroundResource(colorId)
     }
 
     fun getScreenWidth(activity: Activity): Int {
