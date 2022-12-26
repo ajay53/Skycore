@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitBuilder {
 
-    //    private const val BASE_URL: String = "https://jsonplaceholder.typicode.com/"
     private const val BASE_URL: String = Constants.BUSINESS_URL
 
     private val mOkHttpClient: OkHttpClient = OkHttpClient.Builder()

@@ -99,7 +99,7 @@
                 app:layout_constraintStart_toEndOf="@+id/cvIcon"
                 app:layout_constraintTop_toBottomOf="@+id/tvAddress"
                 app:statusAdapter="@{item.isClosed}" />
-            <!--            android:text="@{Util.INSTANCE.getStatus(item.isClosed)}"-->
+            
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvRating"
                 android:layout_width="40dp"
