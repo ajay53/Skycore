@@ -16,9 +16,10 @@ class MainViewModel : ViewModel() {
     }
 
     fun setSearchBusiness(searchBusiness: SearchBusiness) {
-        if (searchBusiness != _searchBusiness.value) {
+        _searchBusiness.value = searchBusiness
+        /*if (searchBusiness != _searchBusiness.value) {
             _searchBusiness.value = searchBusiness
-        }
+        }*/
     }
 
     fun cancelJobs() {

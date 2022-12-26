@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.goazzi.skycore.R
 import com.goazzi.skycore.adapter.RestaurantRecyclerAdapter
 import com.goazzi.skycore.databinding.ActivityMainBinding
@@ -146,13 +147,13 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                         40.730610,
                         -73.935242,
                         radius,
-                        Enum.SortBy.BEST_MATCH.type,
+                        Enum.SortBy.DISTANCE.type,
                         Constants.PAGE_LIMIT,
                         0
                     )
                 } else {
                     SearchBusiness(
-                        lat, lon, radius, Enum.SortBy.BEST_MATCH.type, Constants.PAGE_LIMIT,
+                        lat, lon, radius, Enum.SortBy.DISTANCE.type, Constants.PAGE_LIMIT,
                         0
                     )
                 }
@@ -227,13 +228,13 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                             40.730610,
                             -73.935242,
                             radius,
-                            Enum.SortBy.BEST_MATCH.type,
+                            Enum.SortBy.DISTANCE.type,
                             Constants.PAGE_LIMIT,
                             businesses.size
                         )
                     } else {
                         SearchBusiness(
-                            lat, lon, radius, Enum.SortBy.BEST_MATCH.type, Constants.PAGE_LIMIT,
+                            lat, lon, radius, Enum.SortBy.DISTANCE.type, Constants.PAGE_LIMIT,
                             businesses.size
                         )
                     }
@@ -242,6 +243,33 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 }
             }
         })
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            //call api
+            binding.progressBar.show()
+            binding.ivNoRestaurant.visibility = View.GONE
+            binding.tvNoRestaurant.visibility = View.GONE
+            resetData = true
+            isLoading = true
+            isLastPage = false
+            val searchBusiness = if (binding.swLocation.isChecked) {
+                SearchBusiness(
+                    40.730610,
+                    -73.935242,
+                    radius,
+                    Enum.SortBy.DISTANCE.type,
+                    Constants.PAGE_LIMIT,
+                    0
+                )
+            } else {
+                SearchBusiness(
+                    lat, lon, radius, Enum.SortBy.DISTANCE.type, Constants.PAGE_LIMIT,
+                    0
+                )
+            }
+
+            viewModel.setSearchBusiness(searchBusiness)
+        }
     }
 
     private fun askPermissions() {
@@ -272,11 +300,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 
     @SuppressLint("NotifyDataSetChanged")
     private fun updateUI(businessServiceClass: BusinessesServiceClass) {
-        /*Toast.makeText(
-            applicationContext,
-            "count: ${businessServiceClass.businesses.count()}",
-            Toast.LENGTH_SHORT
-        ).show()*/
+        binding.swipeRefreshLayout.isRefreshing = false
         if (businessServiceClass.businesses.size < Constants.PAGE_LIMIT) {
             isLastPage = true
         }

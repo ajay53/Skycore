@@ -49,9 +49,12 @@
                 android:id="@+id/tvName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
+                android:ellipsize="end"
                 android:fontFamily="@font/rursus_compact_mono"
+                android:maxLines="2"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="@{item.name}"
                 android:textColor="@color/black"
                 android:textSize="14dp"
@@ -66,8 +69,11 @@
                 android:id="@+id/tvAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:ellipsize="end"
                 android:fontFamily="@font/rursus_compact_mono"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="@{item.location.address1}"
                 android:textColor="@color/black"
                 android:textSize="12dp"
@@ -81,9 +87,10 @@
                 android:id="@+id/tvStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
                 android:fontFamily="@font/rursus_compact_mono"
-
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 android:textStyle="normal"
@@ -92,7 +99,7 @@
                 app:layout_constraintStart_toEndOf="@+id/cvIcon"
                 app:layout_constraintTop_toBottomOf="@+id/tvAddress"
                 app:statusAdapter="@{item.isClosed}" />
-<!--            android:text="@{Util.INSTANCE.getStatus(item.isClosed)}"-->
+            <!--            android:text="@{Util.INSTANCE.getStatus(item.isClosed)}"-->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvRating"
                 android:layout_width="40dp"
@@ -111,8 +118,8 @@
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="16dp"
-                    app:ratingAdapter="@{item.rating}"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:ratingAdapter="@{item.rating}" />
                 <!--<androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
