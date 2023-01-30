@@ -144,13 +144,13 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                         40.730610,
                         -73.935242,
                         radius,
-                        Enum.SortBy.DISTANCE.type,
+                        Enum.SortBy.RATING.type,
                         Constants.PAGE_LIMIT,
                         0
                     )
                 } else {
                     SearchBusiness(
-                        lat, lon, radius, Enum.SortBy.DISTANCE.type, Constants.PAGE_LIMIT,
+                        lat, lon, radius, Enum.SortBy.RATING.type, Constants.PAGE_LIMIT,
                         0
                     )
                 }
@@ -229,13 +229,13 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                             40.730610,
                             -73.935242,
                             radius,
-                            Enum.SortBy.DISTANCE.type,
+                            Enum.SortBy.RATING.type,
                             Constants.PAGE_LIMIT,
                             businesses.size
                         )
                     } else {
                         SearchBusiness(
-                            lat, lon, radius, Enum.SortBy.DISTANCE.type, Constants.PAGE_LIMIT,
+                            lat, lon, radius, Enum.SortBy.RATING.type, Constants.PAGE_LIMIT,
                             businesses.size
                         )
                     }
@@ -260,13 +260,13 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                     40.730610,
                     -73.935242,
                     radius,
-                    Enum.SortBy.DISTANCE.type,
+                    Enum.SortBy.RATING.type,
                     Constants.PAGE_LIMIT,
                     0
                 )
             } else {
                 SearchBusiness(
-                    lat, lon, radius, Enum.SortBy.DISTANCE.type, Constants.PAGE_LIMIT,
+                    lat, lon, radius, Enum.SortBy.RATING.type, Constants.PAGE_LIMIT,
                     0
                 )
             }
@@ -308,10 +308,32 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         } else {
             //reset list in case of radius change, else append list - (pagination)
             if (resetData) {
+                recyclerAdapter.refreshList(businessServiceClass.businesses)
+
+                //scroll to 1st item,
+                binding.rvRestaurants.layoutManager?.scrollToPosition(0)
+            } else {
+                businesses.addAll(businessServiceClass.businesses)
+                recyclerAdapter.notifyDataSetChanged()
+            }
+
+
+            /*if (resetData) {
+                businesses.clear()
+                businesses.addAll(businessServiceClass.businesses)
+                recyclerAdapter.notifyDataSetChanged()
+            } else {
+                recyclerAdapter.refreshList(businessServiceClass.businesses)
+            }*/
+
+
+            //OG Code
+            //reset list in case of radius change, else append list - (pagination)
+            /*if (resetData) {
                 businesses.clear()
             }
             businesses.addAll(businessServiceClass.businesses)
-            recyclerAdapter.notifyDataSetChanged()
+            recyclerAdapter.notifyDataSetChanged()*/
         }
         if (businesses.isEmpty()) {
             binding.ivNoRestaurant.visibility = View.VISIBLE

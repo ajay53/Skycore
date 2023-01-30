@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.goazzi.skycore.BR
 import com.goazzi.skycore.databinding.RestaurantListItemBinding
@@ -11,7 +12,7 @@ import com.goazzi.skycore.model.Business
 
 class RestaurantRecyclerAdapter(
     private val context: Context,
-    private val businessList: List<Business>,
+    private val businessList: MutableList<Business>,
     private val onRestaurantClickListener: OnRestaurantClickListener
 ) : RecyclerView.Adapter<RestaurantRecyclerAdapter.ViewHolder>() {
 
@@ -23,7 +24,7 @@ class RestaurantRecyclerAdapter(
             parent,
             false
         )
-        return ViewHolder(itemBinding, onRestaurantClickListener)
+        return ViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -35,9 +36,41 @@ class RestaurantRecyclerAdapter(
         return businessList.size
     }
 
-    class ViewHolder(
+    fun refreshList(restaurants:List<Business>){
+        val oldList = businessList
+        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
+            RestaurantDiffCallback(oldList, restaurants)
+        )
+        businessList.clear()
+        businessList.addAll(restaurants)
+
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    inner class RestaurantDiffCallback(
+        private val oldList: List<Business>,
+        private val newList: List<Business>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int {
+            return oldList.size
+        }
+
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            //No need to compare each property individually, Data class automatically derives the equals() and hashCode()
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+    }
+
+    inner class ViewHolder(
         binding: RestaurantListItemBinding,
-        private val onRestaurantClickListener: OnRestaurantClickListener
     ) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
@@ -54,7 +87,7 @@ class RestaurantRecyclerAdapter(
         }
 
         override fun onClick(p0: View?) {
-            onRestaurantClickListener.onRestaurantClick(adapterPosition)
+            onRestaurantClickListener.onRestaurantClick(absoluteAdapterPosition)
         }
     }
 
