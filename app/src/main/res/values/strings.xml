@@ -8,4 +8,5 @@
     <string name="gps_permission_desc">Please enable GPS to continue searching for restaurants.</string>
     <string name="allow">Allow</string>
     <string name="decline">Decline</string>
+    <string name="no_restaurants_increase_radius">No Restaurants Found,\n Maybe increase the search radius?</string>
 </resources>

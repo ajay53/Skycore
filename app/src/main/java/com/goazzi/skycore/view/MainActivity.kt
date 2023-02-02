@@ -8,6 +8,7 @@ import android.location.Location
 import android.os.Bundle
 import android.os.HandlerThread
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.SeekBar
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.goazzi.skycore.R
 import com.goazzi.skycore.adapter.RestaurantRecyclerAdapter
+import com.goazzi.skycore.adapter.RestaurantRecyclerAdapterNew
 import com.goazzi.skycore.databinding.ActivityMainBinding
 import com.goazzi.skycore.databinding.DialogLocationRequestBinding
 import com.goazzi.skycore.misc.Constants
@@ -35,11 +37,14 @@ import com.goazzi.skycore.viewmodel.MainViewModelFactory
 import com.google.android.gms.location.*
 import java.text.DecimalFormat
 
-class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurantClickListener {
+class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurantClickListener,
+    RestaurantRecyclerAdapterNew.Interaction,
+    View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var businesses: MutableList<Business>
     private lateinit var recyclerAdapter: RestaurantRecyclerAdapter
+    private lateinit var recyclerAdapterNew: RestaurantRecyclerAdapterNew
     private var isLoading: Boolean = false
     private var isLastPage: Boolean = false
     private var radius: Int = 100
@@ -102,6 +107,8 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initViews() {
+        binding.btnRemove.setOnClickListener(this)
+
         binding.sbRadiusSelector.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
@@ -298,7 +305,45 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             isLastPage = true
         }
 
-        if (!this::recyclerAdapter.isInitialized) {
+
+
+
+        if (!this::recyclerAdapterNew.isInitialized) {
+            businesses = mutableListOf<Business>().apply { addAll(businessServiceClass.businesses) }
+
+            binding.rvRestaurants.apply {
+                recyclerAdapterNew =
+                    RestaurantRecyclerAdapterNew(this@MainActivity)
+                adapter = recyclerAdapterNew
+                layoutManager = LinearLayoutManager(applicationContext)
+                setHasFixedSize(true)
+            }
+
+            /*recyclerAdapterNew =
+                RestaurantRecyclerAdapterNew(null)
+            binding.rvRestaurants.adapter = recyclerAdapterNew
+            binding.rvRestaurants.layoutManager = LinearLayoutManager(applicationContext)
+            binding.rvRestaurants.setHasFixedSize(true)*/
+
+            recyclerAdapterNew.submitList(businesses)
+        } else {
+            //reset list in case of radius change, else append list - (pagination)
+            if (resetData) {
+                recyclerAdapterNew.submitList(businessServiceClass.businesses)
+
+                //scroll to 1st item,
+                binding.rvRestaurants.layoutManager?.scrollToPosition(0)
+
+                businesses.clear()
+                businesses.addAll(businessServiceClass.businesses)
+            } else {
+                businesses.addAll(businessServiceClass.businesses)
+                recyclerAdapterNew.notifyDataSetChanged()
+            }
+        }
+
+        //OG Code
+        /*if (!this::recyclerAdapter.isInitialized) {
             businesses = mutableListOf<Business>().apply { addAll(businessServiceClass.businesses) }
             recyclerAdapter =
                 RestaurantRecyclerAdapter(applicationContext, businesses, this)
@@ -316,25 +361,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 businesses.addAll(businessServiceClass.businesses)
                 recyclerAdapter.notifyDataSetChanged()
             }
-
-
-            /*if (resetData) {
-                businesses.clear()
-                businesses.addAll(businessServiceClass.businesses)
-                recyclerAdapter.notifyDataSetChanged()
-            } else {
-                recyclerAdapter.refreshList(businessServiceClass.businesses)
-            }*/
-
-
-            //OG Code
-            //reset list in case of radius change, else append list - (pagination)
-            /*if (resetData) {
-                businesses.clear()
-            }
-            businesses.addAll(businessServiceClass.businesses)
-            recyclerAdapter.notifyDataSetChanged()*/
-        }
+        }*/
         if (businesses.isEmpty()) {
             binding.ivNoRestaurant.visibility = View.VISIBLE
             binding.tvNoRestaurant.visibility = View.VISIBLE
@@ -421,6 +448,15 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         builder.window?.attributes = layoutParams
     }
 
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            binding.btnRemove.id -> {
+                businesses.removeAt(3)
+                recyclerAdapterNew.removeAt(3)
+            }
+        }
+    }
+
     private fun createLocationRequest() {
         locationRequest = LocationRequest.Builder(
             Priority.PRIORITY_HIGH_ACCURACY,
@@ -482,6 +518,11 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 
     override fun onRestaurantClick(pos: Int) {
         Toast.makeText(applicationContext, businesses[pos].name, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onItemSelected(position: Int, item: Business) {
+        Log.d(TAG, "onItemSelected: from list: ${businesses[position].name}")
+        Log.d(TAG, "onItemSelected: from obj: ${item.name}")
     }
 
     override fun onDestroy() {

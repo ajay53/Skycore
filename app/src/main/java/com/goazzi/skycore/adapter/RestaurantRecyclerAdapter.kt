@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.goazzi.skycore.BR
-import com.goazzi.skycore.databinding.RestaurantListItemBinding
+import com.goazzi.skycore.databinding.LayoutRestaurantListItemBinding
 import com.goazzi.skycore.model.Business
 
 class RestaurantRecyclerAdapter(
@@ -19,7 +19,7 @@ class RestaurantRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater =
             LayoutInflater.from(parent.context)
-        val itemBinding: RestaurantListItemBinding = RestaurantListItemBinding.inflate(
+        val itemBinding: LayoutRestaurantListItemBinding = LayoutRestaurantListItemBinding.inflate(
             layoutInflater,
             parent,
             false
@@ -70,11 +70,11 @@ class RestaurantRecyclerAdapter(
     }
 
     inner class ViewHolder(
-        binding: RestaurantListItemBinding,
+        binding: LayoutRestaurantListItemBinding
     ) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
-        private val binding: RestaurantListItemBinding
+        private val binding: LayoutRestaurantListItemBinding
 
         init {
             this.binding = binding
