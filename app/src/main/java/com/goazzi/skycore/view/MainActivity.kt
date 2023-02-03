@@ -35,6 +35,7 @@ import com.goazzi.skycore.model.SearchBusiness
 import com.goazzi.skycore.viewmodel.MainViewModel
 import com.goazzi.skycore.viewmodel.MainViewModelFactory
 import com.google.android.gms.location.*
+import kotlinx.coroutines.*
 import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurantClickListener,
@@ -186,11 +187,12 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 "Location: Current"
             }
             if (this::businesses.isInitialized) {
-                businesses.clear()
+//                businesses.clear()
+                businesses = mutableListOf()
             }
 
-            if(this::recyclerAdapterNew.isInitialized){
-                recyclerAdapterNew.submitList(businesses)
+            if (this::recyclerAdapterNew.isInitialized) {
+                recyclerAdapterNew.submitList(businesses, binding.rvRestaurants)
             }
 
             //OG Code
@@ -331,20 +333,34 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             binding.rvRestaurants.layoutManager = LinearLayoutManager(applicationContext)
             binding.rvRestaurants.setHasFixedSize(true)*/
 
-            recyclerAdapterNew.submitList(businesses)
+            recyclerAdapterNew.submitList(businesses, binding.rvRestaurants)
         } else {
             //reset list in case of radius change, else append list - (pagination)
             if (resetData) {
-                recyclerAdapterNew.submitList(businessServiceClass.businesses)
+                businesses =
+                    mutableListOf<Business>().apply { addAll(businessServiceClass.businesses) }
+
+                recyclerAdapterNew.submitList(businesses, binding.rvRestaurants)
+//                recyclerAdapterNew.submitList(businessServiceClass.businesses)
 
                 //scroll to 1st item,
-                binding.rvRestaurants.layoutManager?.scrollToPosition(0)
 
-                businesses.clear()
-                businesses.addAll(businessServiceClass.businesses)
+                /*CoroutineScope(Dispatchers.Default).launch {
+                    delay(2000)
+                    Log.d(TAG, "updateUI: post delay")
+                    withContext(Dispatchers.Main) {
+                        binding.rvRestaurants.layoutManager?.scrollToPosition(0)
+                    }
+                }*/
+
+
+//                businesses.clear()
+//                businesses.addAll(businessServiceClass.businesses)
             } else {
                 businesses.addAll(businessServiceClass.businesses)
-                recyclerAdapterNew.notifyDataSetChanged()
+
+                recyclerAdapterNew.submitList(businesses, binding.rvRestaurants)
+//                recyclerAdapterNew.notifyDataSetChanged()
             }
         }
 
@@ -458,7 +474,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         when (p0?.id) {
             binding.btnRemove.id -> {
                 businesses.removeAt(3)
-//                recyclerAdapterNew.submitList(businesses)
+//                recyclerAdapterNew.submitList(businesses, binding.rvRestaurants)
                 recyclerAdapterNew.removeAt(3)
             }
         }

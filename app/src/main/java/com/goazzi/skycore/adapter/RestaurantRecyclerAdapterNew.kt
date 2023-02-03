@@ -2,6 +2,7 @@ package com.goazzi.skycore.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,9 @@ import com.goazzi.skycore.model.Business
 
 class RestaurantRecyclerAdapterNew(private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    //everytime list is refreshed, new list object is created in MainActivity before calling submitList in this class
+    //if the above is not done, list is not refreshed
 
     private val diffCallback = object : DiffUtil.ItemCallback<Business>() {
 
@@ -66,14 +70,19 @@ class RestaurantRecyclerAdapterNew(private val interaction: Interaction? = null)
         return differ.currentList.size
     }
 
-    fun submitList(list: List<Business>) {
-        differ.submitList(list)
+    fun submitList(list: List<Business>, rv:RecyclerView?) {
+        //everytime list is refreshed, new list object is created in MainActivity before calling submitList in this class
+        //if the above is not done, list is not refreshed
+        differ.submitList(list) {
+            //scroll to top once listDiffer is done
+            rv?.layoutManager?.scrollToPosition(0)
+        }
     }
 
     fun removeAt(position: Int) {
         val list:MutableList<Business> = mutableListOf<Business>().apply { addAll(differ.currentList) }
         list.removeAt(position)
-        submitList(list)
+        submitList(list, null)
     }
 
     fun insertAdd(position: Int){
