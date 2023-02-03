@@ -188,9 +188,15 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             if (this::businesses.isInitialized) {
                 businesses.clear()
             }
-            if (this::recyclerAdapter.isInitialized) {
-                recyclerAdapter.notifyDataSetChanged()
+
+            if(this::recyclerAdapterNew.isInitialized){
+                recyclerAdapterNew.submitList(businesses)
             }
+
+            //OG Code
+            /*if (this::recyclerAdapter.isInitialized) {
+                recyclerAdapter.notifyDataSetChanged()
+            }*/
             resetData = true
             isLoading = false
             isLastPage = false
@@ -452,6 +458,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         when (p0?.id) {
             binding.btnRemove.id -> {
                 businesses.removeAt(3)
+//                recyclerAdapterNew.submitList(businesses)
                 recyclerAdapterNew.removeAt(3)
             }
         }

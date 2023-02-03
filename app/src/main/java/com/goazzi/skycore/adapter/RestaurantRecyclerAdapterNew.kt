@@ -70,10 +70,14 @@ class RestaurantRecyclerAdapterNew(private val interaction: Interaction? = null)
         differ.submitList(list)
     }
 
-    fun removeAt(pos: Int) {
-        differ.currentList.removeAt(pos)
-        notifyItemRemoved(pos)
-        notifyItemRangeChanged(pos, differ.currentList.size)
+    fun removeAt(position: Int) {
+        val list:MutableList<Business> = mutableListOf<Business>().apply { addAll(differ.currentList) }
+        list.removeAt(position)
+        submitList(list)
+    }
+
+    fun insertAdd(position: Int){
+
     }
 
     inner class ViewHolder(binding: LayoutRestaurantListItemBinding) :
