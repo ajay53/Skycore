@@ -125,6 +125,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                     0 -> {
                         100
                     }
+
                     else -> {
                         250 * p1
                     }
@@ -431,6 +432,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 alertBinding.tvTitle.text = getString(R.string.gps_permission_title)
                 alertBinding.tvDesc.text = getString(R.string.gps_permission_desc)
             }
+
             Enum.Permission.LOCATION -> {
                 alertBinding.tvTitle.text = getString(R.string.location_permission_title)
                 alertBinding.tvDesc.text = getString(R.string.location_permission_desc)
@@ -444,6 +446,7 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 Enum.Permission.GPS -> {
                     gpsReqLauncher.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 }
+
                 Enum.Permission.LOCATION -> {
                     permReqLauncher.launch(
                         arrayOf(
@@ -473,9 +476,8 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
     override fun onClick(p0: View?) {
         when (p0?.id) {
             binding.btnRemove.id -> {
-                businesses.removeAt(3)
-//                recyclerAdapterNew.submitList(businesses, binding.rvRestaurants)
-                recyclerAdapterNew.removeAt(3)
+                businesses.removeAt(1)
+                recyclerAdapterNew.removeAt(1)
             }
         }
     }
