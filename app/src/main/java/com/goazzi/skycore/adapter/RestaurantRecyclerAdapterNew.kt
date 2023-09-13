@@ -10,7 +10,7 @@ import com.goazzi.skycore.BR
 import com.goazzi.skycore.databinding.LayoutRestaurantListItemBinding
 import com.goazzi.skycore.model.Business
 
-class RestaurantRecyclerAdapterNew(private val interaction: Interaction? = null) :
+class RestaurantRecyclerAdapterNew(private val interaction: Interaction) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     //everytime list is refreshed, new list object is created in MainActivity before calling submitList in this class
@@ -106,7 +106,7 @@ class RestaurantRecyclerAdapterNew(private val interaction: Interaction? = null)
             binding.executePendingBindings()
 
             itemView.setOnClickListener {
-                interaction?.onItemSelected(absoluteAdapterPosition, item)
+                interaction.onItemSelected(absoluteAdapterPosition, item)
             }
         }
     }
