@@ -108,6 +108,9 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initViews() {
+        binding.ivNoRestaurant.visibility = View.VISIBLE
+        binding.tvNoRestaurant.visibility = View.VISIBLE
+
         binding.btnRemove.setOnClickListener(this)
 
         binding.sbRadiusSelector.setOnSeekBarChangeListener(object :
@@ -204,8 +207,8 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             isLoading = false
             isLastPage = false
             binding.sbRadiusSelector.progress = 0
-            binding.ivNoRestaurant.visibility = View.GONE
-            binding.tvNoRestaurant.visibility = View.GONE
+            binding.ivNoRestaurant.visibility = View.VISIBLE
+            binding.tvNoRestaurant.visibility = View.VISIBLE
             viewModel.cancelJobs()
             binding.progressBar.hide()
         }
