@@ -1,9 +1,9 @@
 package com.goazzi.skycore.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.switchMap
 import com.goazzi.skycore.model.SearchBusiness
 import com.goazzi.skycore.repository.MainRepository
 
@@ -11,9 +11,12 @@ class MainViewModel : ViewModel() {
 
     private val _searchBusiness: MutableLiveData<SearchBusiness> = MutableLiveData()
 
-    val businessServiceClass = Transformations.switchMap(_searchBusiness) {
+    val businessServiceClass = _searchBusiness.switchMap {
         MainRepository.searchBusinesses(it.lat, it.lon, it.radius, it.sortBy, it.limit, it.offset)
     }
+    /*val businessServiceClass = Transformations.switchMap(_searchBusiness) {
+        MainRepository.searchBusinesses(it.lat, it.lon, it.radius, it.sortBy, it.limit, it.offset)
+    }*/
 
     fun setSearchBusiness(searchBusiness: SearchBusiness) {
         _searchBusiness.value = searchBusiness
