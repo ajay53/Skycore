@@ -6,15 +6,15 @@ l
 y
 Iapp/src/main/java/com/goazzi/skycore/adapter/RestaurantRecyclerAdapter.kt,2/5/255e8317b3cf3af207d704c1060603f6b40a2259
 i
-9app/src/main/java/com/goazzi/skycore/view/MainActivity.kt,8/e/8e3ca31c62faa124ffdb5e713d027ccdf08febbf
+9app/src/main/java/com/goazzi/skycore/view/MainActivity.kt,8\e\8e3ca31c62faa124ffdb5e713d027ccdf08febbf
 |
 Lapp/src/main/java/com/goazzi/skycore/adapter/RestaurantRecyclerAdapterNew.kt,8/6/86f29a7d09adc38a1d946040b939d93cdb9b131a
 @
-app/build.gradle,f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164
+app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 a
 1app/src/main/java/com/goazzi/skycore/misc/Util.kt,3/5/35ba4e11e63e6dc339208fcfcce16502f4f6c192
 <
-build.gradle,f/0/f07866736216be0ee2aba49e392191aeae700a35
+build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 f
 6app/src/main/java/com/goazzi/skycore/misc/Constants.kt,d/1/d13f7f455e52becddee932b4ab45c6affc4b5ab2
 a
@@ -22,7 +22,7 @@ a
 P
  app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
 o
-?app/src/main/java/com/goazzi/skycore/viewmodel/MainViewModel.kt,5/7/57cb98d2492acf3076e0d4ad4a16e9c51ff7c1fb
+?app/src/main/java/com/goazzi/skycore/viewmodel/MainViewModel.kt,5\7\57cb98d2492acf3076e0d4ad4a16e9c51ff7c1fb
 q
 Aapp/src/main/java/com/goazzi/skycore/repository/api/ApiService.kt,5/e/5e8862ba2f53363c279b76cfe0668bedcf9f1778
 v
@@ -37,11 +37,11 @@ Kapp/src/main/java/com/goazzi/skycore/repository/api/AddHeaderInterceptor.kt,a/
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
 ?
-keys.properties,d/5/d51807034090b72f02209f48e35b381bd5719312
+keys.properties,d\5\d51807034090b72f02209f48e35b381bd5719312
 p
-@app/src/main/java/com/goazzi/skycore/view/RestauranListScreen.kt,2/a/2a417ee88fe0800b097499d954b78b15f31ae581
+@app/src/main/java/com/goazzi/skycore/view/RestauranListScreen.kt,2\a\2a417ee88fe0800b097499d954b78b15f31ae581
 X
-(gradle/wrapper/gradle-wrapper.properties,f/b/fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
+(gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
 ?
 settings.gradle,0/5/05efc8b1657769a27696d478ded1e95f38737233
 A
