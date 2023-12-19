@@ -10,11 +10,11 @@ i
 |
 Lapp/src/main/java/com/goazzi/skycore/adapter/RestaurantRecyclerAdapterNew.kt,8/6/86f29a7d09adc38a1d946040b939d93cdb9b131a
 @
-app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
+app/build.gradle,f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164
 a
 1app/src/main/java/com/goazzi/skycore/misc/Util.kt,3/5/35ba4e11e63e6dc339208fcfcce16502f4f6c192
 <
-build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
+build.gradle,f/0/f07866736216be0ee2aba49e392191aeae700a35
 f
 6app/src/main/java/com/goazzi/skycore/misc/Constants.kt,d/1/d13f7f455e52becddee932b4ab45c6affc4b5ab2
 a
@@ -39,9 +39,9 @@ Kapp/src/main/java/com/goazzi/skycore/repository/api/AddHeaderInterceptor.kt,a/
 ?
 keys.properties,d\5\d51807034090b72f02209f48e35b381bd5719312
 p
-@app/src/main/java/com/goazzi/skycore/view/RestauranListScreen.kt,2\a\2a417ee88fe0800b097499d954b78b15f31ae581
+@app/src/main/java/com/goazzi/skycore/view/RestauranListScreen.kt,2/a/2a417ee88fe0800b097499d954b78b15f31ae581
 X
-(gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
+(gradle/wrapper/gradle-wrapper.properties,f/b/fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
 ?
 settings.gradle,0/5/05efc8b1657769a27696d478ded1e95f38737233
 A
