@@ -17,6 +17,9 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,13 +35,15 @@ import com.goazzi.skycore.misc.Util
 import com.goazzi.skycore.model.Business
 import com.goazzi.skycore.model.BusinessesServiceClass
 import com.goazzi.skycore.model.SearchBusiness
+import com.goazzi.skycore.view.compose.RestaurantListScreen
 import com.goazzi.skycore.viewmodel.MainViewModel
 import com.goazzi.skycore.viewmodel.MainViewModelFactory
 import com.google.android.gms.location.*
 import kotlinx.coroutines.*
 import java.text.DecimalFormat
 
-class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurantClickListener,
+class MainActivity : AppCompatActivity(R.layout.activity_main),
+    RestaurantRecyclerAdapter.OnRestaurantClickListener,
     RestaurantRecyclerAdapterNew.Interaction,
     View.OnClickListener {
 
@@ -70,7 +75,16 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
         //to hide action/title bar
         supportActionBar?.hide()
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater).apply {
+            cvRestaurant.apply {
+                setViewCompositionStrategy(
+                    ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+                )
+                setContent {
+                    RestaurantListScreen(viewModel)
+                }
+            }
+        }
         setContentView(binding.root)
 
         viewModel.businessServiceClass.observe(this) { business ->
@@ -388,7 +402,8 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
                 recyclerAdapter.notifyDataSetChanged()
             }
         }*/
-        if (businesses.isEmpty()) {
+        //TODO("undo")
+        /*if (businesses.isEmpty()) {
             binding.ivNoRestaurant.visibility = View.VISIBLE
             binding.tvNoRestaurant.visibility = View.VISIBLE
             binding.rvRestaurants.visibility = View.GONE
@@ -396,7 +411,11 @@ class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurant
             binding.ivNoRestaurant.visibility = View.GONE
             binding.tvNoRestaurant.visibility = View.GONE
             binding.rvRestaurants.visibility = View.VISIBLE
-        }
+        }*/
+    }
+
+    private fun updateUICompose(businessServiceClass: BusinessesServiceClass){
+//        RestaurantListScreen(restaurants = businessServiceClass.businesses)
     }
 
     private val permReqLauncher =

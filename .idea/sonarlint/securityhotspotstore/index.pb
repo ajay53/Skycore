@@ -8,7 +8,7 @@ l
 |
 Lapp/src/main/java/com/goazzi/skycore/adapter/RestaurantRecyclerAdapterNew.kt,8/6/86f29a7d09adc38a1d946040b939d93cdb9b131a
 i
-9app/src/main/java/com/goazzi/skycore/view/MainActivity.kt,8\e\8e3ca31c62faa124ffdb5e713d027ccdf08febbf
+9app/src/main/java/com/goazzi/skycore/view/MainActivity.kt,8/e/8e3ca31c62faa124ffdb5e713d027ccdf08febbf
 @
 app/build.gradle,f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164
 a
@@ -22,7 +22,7 @@ a
 P
  app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
 o
-?app/src/main/java/com/goazzi/skycore/viewmodel/MainViewModel.kt,5\7\57cb98d2492acf3076e0d4ad4a16e9c51ff7c1fb
+?app/src/main/java/com/goazzi/skycore/viewmodel/MainViewModel.kt,5/7/57cb98d2492acf3076e0d4ad4a16e9c51ff7c1fb
 q
 Aapp/src/main/java/com/goazzi/skycore/repository/api/ApiService.kt,5/e/5e8862ba2f53363c279b76cfe0668bedcf9f1778
 q
@@ -38,8 +38,6 @@ Kapp/src/main/java/com/goazzi/skycore/repository/api/AddHeaderInterceptor.kt,a/
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
 ?
 keys.properties,d\5\d51807034090b72f02209f48e35b381bd5719312
-p
-@app/src/main/java/com/goazzi/skycore/view/RestauranListScreen.kt,2/a/2a417ee88fe0800b097499d954b78b15f31ae581
 X
 (gradle/wrapper/gradle-wrapper.properties,f/b/fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
 ?
@@ -100,3 +98,7 @@ w
 G.idea/sonarlint/issuestore/6/a/6aa3686505313aa4296b302c50e9f6e5d4f83810,8/3/83b0224d0cd2fa0f7dddcc62fed6124a093b8fa8
 Å
 Q.idea/sonarlint/securityhotspotstore/6/5/65ae487c8283b592c1ea1d03c690b137cc648c9e,c/0/c0f06b2c8ebfea00d2d4e5727e2ba6e346de91bc
+x
+Happ/src/main/java/com/goazzi/skycore/view/compose/RestauranListScreen.kt,4/a/4aefe06f2f3936e673ab2facaf4eb38600fac9a7
+w
+Gapp/src/main/java/com/goazzi/skycore/view/compose/RestaurantListItem.kt,0/1/0133e4286cb53b85a9e693326fac65e5a83b9dec

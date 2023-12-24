@@ -14,6 +14,7 @@ class MainViewModel : ViewModel() {
     val businessServiceClass = _searchBusiness.switchMap {
         MainRepository.searchBusinesses(it.lat, it.lon, it.radius, it.sortBy, it.limit, it.offset)
     }
+
     /*val businessServiceClass = Transformations.switchMap(_searchBusiness) {
         MainRepository.searchBusinesses(it.lat, it.lon, it.radius, it.sortBy, it.limit, it.offset)
     }*/

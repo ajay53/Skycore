@@ -1,5 +1,8 @@
-package com.goazzi.skycore.view
+package com.goazzi.skycore.view.compose
 
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,15 +35,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.bumptech.glide.request.RequestOptions
 import com.goazzi.skycore.R
 import com.goazzi.skycore.model.Business
-
-@Composable
-fun RestaurantListScreen() {
-}
 
 @Composable
 fun RestaurantListItem(business: Business? = null, modifier: Modifier = Modifier) {
@@ -54,22 +53,19 @@ fun RestaurantListItem(business: Business? = null, modifier: Modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            val options: RequestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_restaurant)
-                .error(R.drawable.ic_restaurant)
 
-//            Glide.with(context).setDefaultRequestOptions(options).load(imageUrl).into(view)
-
+            business!! //non-null asserting for all the future use
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI")
+                    .data(business.imageURL)
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(R.drawable.ic_restaurant),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
+                error = painterResource(R.drawable.ic_restaurant),
                 modifier = Modifier
-                    .clip(RoundedCornerShape(2.dp))
+                    .clip(RoundedCornerShape(3.dp))
                     .background(color = Color.Transparent)
                     .size(50.dp)
             )
@@ -102,28 +98,78 @@ fun RestaurantListItem(business: Business? = null, modifier: Modifier = Modifier
                     .weight(1f)
                     .background(color = colorResource(id = R.color.purple_200))
             ) {
-                Text(
-                    text = "Restaurant Name aaaaaaaaaaaaaaaa bbbbbbbbbbbbb",
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+
+                if (business.name != null && business.name.isNotBlank()) {
+                    Text(
+                        text = business.name,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
 //                fontSize = 12.sp,
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Bold,
-                    /*modifier = Modifier.background(
-                        color = colorResource(id = R.color.teal_200)
-                    )*/
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Bold,
+                        /*modifier = Modifier.background(
+                            color = colorResource(id = R.color.teal_200)
+                        )*/
+                    )
+                }
+
+                if (business.location?.address1 != null && business.location.address1.isNotBlank()) {
+                    Text(
+                        text = business.location.address1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.bodySmall,
+                        /*modifier = Modifier.background(
+                            color = colorResource(id = R.color.teal_200)
+                        )*/
+                    )
+                }
+
+                //setting status text color as per the open/close status
+                val status = if (business.isClosed?: false) {
+                    "Currently CLOSED"
+                } else {
+                    "Currently OPEN"
+                }
+
+                val spannable = SpannableString(status)
+                spannable.setSpan(
+                    ForegroundColorSpan(
+                        ContextCompat.getColor(
+                            LocalContext.current,
+                            R.color.black
+                        )
+                    ),
+                    0, 9,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
+                if (business.isClosed) {
+                    spannable.setSpan(
+                        ForegroundColorSpan(
+                            ContextCompat.getColor(
+                                LocalContext.current,
+                                R.color.holo_red_dark
+                            )
+                        ),
+                        9, status.length,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                } else {
+                    spannable.setSpan(
+                        ForegroundColorSpan(
+                            ContextCompat.getColor(
+                                LocalContext.current,
+                                R.color.holo_green_dark
+                            )
+                        ),
+                        9, status.length,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+
+
                 Text(
-                    text = "Address Line 1 aaaaaaaaaaaaaaaa bbbbbbbbbbbbb",
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.bodySmall,
-                    /*modifier = Modifier.background(
-                        color = colorResource(id = R.color.teal_200)
-                    )*/
-                )
-                Text(
-                    text = "Address Line 2 aaaaaaaaaaaaaaaa bbbbbbbbbbbbb",
+                    text = spannable.toString(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
 //                fontSize = 12.sp,

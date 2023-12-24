@@ -133,8 +133,8 @@
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/separator" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/cv_restaurant"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="5dp"
@@ -143,12 +143,31 @@
         android:layout_marginBottom="10dp"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNearbyRestaurants" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvNearbyRestaurants">
+
+        <!--<androidx.compose.ui.platform.ComposeView
+            android:id="@+id/cv_restaurant"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRestaurants"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             tools:listitem="@layout/layout_restaurant_list_item" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
