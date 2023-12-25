@@ -170,13 +170,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
                         40.730610,
                         -73.935242,
                         radius,
-                        Enum.SortBy.RATING.type,
+                        Enum.SortBy.DISTANCE.type,
                         Constants.PAGE_LIMIT,
                         0
                     )
                 } else {
                     SearchBusiness(
-                        lat, lon, radius, Enum.SortBy.RATING.type, Constants.PAGE_LIMIT,
+                        lat, lon, radius, Enum.SortBy.DISTANCE.type, Constants.PAGE_LIMIT,
                         0
                     )
                 }
@@ -262,13 +262,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
                             40.730610,
                             -73.935242,
                             radius,
-                            Enum.SortBy.RATING.type,
+                            Enum.SortBy.DISTANCE.type,
                             Constants.PAGE_LIMIT,
                             businesses.size
                         )
                     } else {
                         SearchBusiness(
-                            lat, lon, radius, Enum.SortBy.RATING.type, Constants.PAGE_LIMIT,
+                            lat, lon, radius, Enum.SortBy.DISTANCE.type, Constants.PAGE_LIMIT,
                             businesses.size
                         )
                     }
@@ -293,13 +293,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
                     40.730610,
                     -73.935242,
                     radius,
-                    Enum.SortBy.RATING.type,
+                    Enum.SortBy.DISTANCE.type,
                     Constants.PAGE_LIMIT,
                     0
                 )
             } else {
                 SearchBusiness(
-                    lat, lon, radius, Enum.SortBy.RATING.type, Constants.PAGE_LIMIT,
+                    lat, lon, radius, Enum.SortBy.DISTANCE.type, Constants.PAGE_LIMIT,
                     0
                 )
             }
