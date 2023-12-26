@@ -96,8 +96,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
                     Toast.makeText(applicationContext, business.message, Toast.LENGTH_SHORT)
                         .show()
                 }
-                binding.ivNoRestaurant.visibility = View.VISIBLE
-                binding.tvNoRestaurant.visibility = View.VISIBLE
+//                binding.ivNoRestaurant.visibility = View.VISIBLE
+//                binding.tvNoRestaurant.visibility = View.VISIBLE
             } else {
                 updateUI(business)
             }
@@ -122,8 +122,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initViews() {
-        binding.ivNoRestaurant.visibility = View.VISIBLE
-        binding.tvNoRestaurant.visibility = View.VISIBLE
+//        binding.ivNoRestaurant.visibility = View.VISIBLE
+//        binding.tvNoRestaurant.visibility = View.VISIBLE
 
         binding.btnRemove.setOnClickListener(this)
 
@@ -221,8 +221,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
             isLoading = false
             isLastPage = false
             binding.sbRadiusSelector.progress = 0
-            binding.ivNoRestaurant.visibility = View.VISIBLE
-            binding.tvNoRestaurant.visibility = View.VISIBLE
+//            binding.ivNoRestaurant.visibility = View.VISIBLE
+//            binding.tvNoRestaurant.visibility = View.VISIBLE
             viewModel.cancelJobs()
             binding.progressBar.hide()
         }

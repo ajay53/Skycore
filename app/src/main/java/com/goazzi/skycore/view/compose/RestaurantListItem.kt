@@ -66,22 +66,6 @@ fun RestaurantListItem(business: Business? = null, modifier: Modifier = Modifier
                     .size(50.dp)
             )
 
-            /*Image(
-                painter = painterResource(R.drawable.ic_restaurant),
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .fillMaxHeight()
-//                .size(50.dp)
-                    .background(
-                        color = colorResource(
-                            id = R.color.holo_green_dark
-                        )
-                    )
-                    .clip(CircleShape)
-            )*/
-
             Spacer(
                 modifier = Modifier
                     .width(5.dp)
@@ -93,7 +77,6 @@ fun RestaurantListItem(business: Business? = null, modifier: Modifier = Modifier
                 modifier = modifier
                     .fillMaxHeight()
                     .weight(1f)
-//                    .background(color = colorResource(id = R.color.purple_200))
             ) {
 
                 if (business.name != null && business.name.isNotBlank()) {
@@ -101,12 +84,8 @@ fun RestaurantListItem(business: Business? = null, modifier: Modifier = Modifier
                         text = business.name,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-//                fontSize = 12.sp,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
-                        /*modifier = Modifier.background(
-                            color = colorResource(id = R.color.teal_200)
-                        )*/
                     )
                 }
 
@@ -116,9 +95,6 @@ fun RestaurantListItem(business: Business? = null, modifier: Modifier = Modifier
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.bodySmall,
-                        /*modifier = Modifier.background(
-                            color = colorResource(id = R.color.teal_200)
-                        )*/
                     )
                 }
 
@@ -144,11 +120,7 @@ fun RestaurantListItem(business: Business? = null, modifier: Modifier = Modifier
                     text = builder.toAnnotatedString(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-//                fontSize = 12.sp,
                     style = MaterialTheme.typography.bodySmall,
-                    /*modifier = Modifier.background(
-                        color = colorResource(id = R.color.teal_200)
-                    )*/
                 )
             }
 
@@ -175,7 +147,6 @@ fun RestaurantListItem(business: Business? = null, modifier: Modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .background(color = colorResource(id = colorId))
             ) {
-//                Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxSize()) {
                 Text(
                     text = business.rating.toString(),
                     color = colorResource(id = R.color.white),
@@ -185,8 +156,6 @@ fun RestaurantListItem(business: Business? = null, modifier: Modifier = Modifier
                     modifier = Modifier
                         .align(Alignment.Center)
                 )
-//                }
-
             }
         }
     }

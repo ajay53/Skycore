@@ -1,19 +1,19 @@
 
-\kotlin:S1172¡"=Remove this unused function parameter "businessServiceClass".(§ŞÖ!8¨÷İàÉ1
-Xkotlin:S1172¶"9Use "_" instead of this unused lambda parameter "result".(èÌ¹.8©÷İàÉ1
-Ckotlin:S125Ğ"Remove this commented out code.(Ùçšğşÿÿÿÿ8´÷İàÉ1
-=kotlin:S125Ü"Remove this commented out code.(Ä†¼O8 Ó²É1
->kotlin:S125ê"Remove this commented out code.(£…Ÿì8²÷İàÉ1
-Ckotlin:S125î"Remove this commented out code.(üÈø¤øÿÿÿÿ8¡Ó²É1
-Ckotlin:S125÷"Remove this commented out code.(Ùçšğşÿÿÿÿ8ŠåÊ1
->kotlin:S125ı"Remove this commented out code.(ÙÒ›8´÷İàÉ1
->kotlin:S125•"Remove this commented out code.(ÉóÒÛ8Ï—óàÉ1
-=kotlin:S125Ò"Remove this commented out code.(¨˜€#8¶÷İàÉ1
-Ckotlin:S125“"Remove this commented out code.(¬ïëÕøÿÿÿÿ8·÷İàÉ1
-Skotlin:S1144¡"4Remove this unused private "updateUICompose" method.(§ŞÖ!8À÷İàÉ1
-Rkotlin:S1135•"2Complete the task associated to this TODO comment.(ÉóÒÛ8ñÛòàÉ1
-\kotlin:S1481ğ"<Remove this unused "lastVisibleItemPosition" local variable.(î€¢İ8®åÊ1
-9kotlin:S1128"Remove this unused import.(À³»Ÿ8ü†‡±É1
->kotlin:S1128"Remove this unused import.(€¤™ùÿÿÿÿ8ÑÖŞàÉ1
-vkotlin:S3776|"RRefactor this method to reduce its Cognitive Complexity from 32 to the 15 allowed.(èê—ÿÿÿÿÿ8Ú÷İàÉ1
-kotlin:S1186Ã"ZAdd a nested comment explaining why this function is empty or complete the implementation.(†—×ªûÿÿÿÿ8ÁåÊ1
+\kotlin:S1172¡"=Remove this unused function parameter "businessServiceClass".(§ŞÖ!8Ø“Ş©Ê1
+Qkotlin:S1172¶"9Use "_" instead of this unused lambda parameter "result".(èÌ¹.
+Ckotlin:S125Ğ"Remove this commented out code.(Ùçšğşÿÿÿÿ8Ø“Ş©Ê1
+=kotlin:S125Ü"Remove this commented out code.(Ä†¼O8Ø“Ş©Ê1
+>kotlin:S125ê"Remove this commented out code.(£…Ÿì8Ø“Ş©Ê1
+Ckotlin:S125î"Remove this commented out code.(üÈø¤øÿÿÿÿ8Ø“Ş©Ê1
+Ckotlin:S125÷"Remove this commented out code.(Ùçšğşÿÿÿÿ8Ø“Ş©Ê1
+>kotlin:S125ı"Remove this commented out code.(ÙÒ›8Ø“Ş©Ê1
+>kotlin:S125•"Remove this commented out code.(ÉóÒÛ8ç“Ş©Ê1
+6kotlin:S125Ò"Remove this commented out code.(¨˜€#
+<kotlin:S125“"Remove this commented out code.(¬ïëÕøÿÿÿÿ
+Skotlin:S1144¡"4Remove this unused private "updateUICompose" method.(§ŞÖ!8÷“Ş©Ê1
+Rkotlin:S1135•"2Complete the task associated to this TODO comment.(ÉóÒÛ8‡”Ş©Ê1
+\kotlin:S1481ğ"<Remove this unused "lastVisibleItemPosition" local variable.(î€¢İ8‡”Ş©Ê1
+9kotlin:S1128"Remove this unused import.(À³»Ÿ8‡”Ş©Ê1
+>kotlin:S1128"Remove this unused import.(€¤™ùÿÿÿÿ8‡”Ş©Ê1
+vkotlin:S3776|"RRefactor this method to reduce its Cognitive Complexity from 32 to the 15 allowed.(èê—ÿÿÿÿÿ8—”Ş©Ê1
+kotlin:S1186Ã"ZAdd a nested comment explaining why this function is empty or complete the implementation.(†—×ªûÿÿÿÿ8—”Ş©Ê1
