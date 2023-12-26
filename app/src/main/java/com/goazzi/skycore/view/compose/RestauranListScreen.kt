@@ -35,7 +35,8 @@ fun RestaurantListScreen(viewModel: MainViewModel, modifier: Modifier = Modifier
     val foo = viewModel.businessServiceClass.observeAsState()
     val business: List<Business>? = foo.value?.businesses
 
-    if (business != null) {
+    //further checks can be added for http_status, etc.
+    if (!business.isNullOrEmpty()) {
         //show restaurant list
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(5.dp),
