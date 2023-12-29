@@ -38,8 +38,6 @@ Kapp/src/main/java/com/goazzi/skycore/repository/api/AddHeaderInterceptor.kt,a/
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
 ?
 keys.properties,d\5\d51807034090b72f02209f48e35b381bd5719312
-p
-@app/src/main/java/com/goazzi/skycore/view/RestauranListScreen.kt,2\a\2a417ee88fe0800b097499d954b78b15f31ae581
 X
 (gradle/wrapper/gradle-wrapper.properties,f/b/fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
 ?
@@ -106,8 +104,6 @@ x
 Happ/src/main/java/com/goazzi/skycore/view/compose/RestauranListScreen.kt,4/a/4aefe06f2f3936e673ab2facaf4eb38600fac9a7
 w
 G.idea/sonarlint/issuestore/d/5/d51807034090b72f02209f48e35b381bd5719312,f\0\f0176c584441dafdc8a8208738cdd4eef5ca59db
-Å
-Q.idea/sonarlint/securityhotspotstore/2/a/2a417ee88fe0800b097499d954b78b15f31ae581,5\5\550bd7aa88ca2f508ffad5a7b949bdd0f804740a
 \
 ,.idea/inspectionProfiles/Project_Default.xml,4\9\496a238a6afa168dbaf6efd37bb459331589579c
 Å
@@ -120,3 +116,5 @@ w
 G.idea/sonarlint/issuestore/a/5/a5cc2925ca8258af241be7e5b0381edf30266302,e/d/ed67eb178d523a4b3f117dcbe0eda5196367ceec
 Å
 Q.idea/sonarlint/securityhotspotstore/a/5/a5cc2925ca8258af241be7e5b0381edf30266302,3/0/30205a209c6ce77c4cfc19a09e6f57c588b7fb88
+}
+Mapp/src/main/java/com/goazzi/skycore/view/compose/RestaurantSelectorScreen.kt,d/e/de3ae4b43bd70f5317b4407a2a4b501b79ad70e4
