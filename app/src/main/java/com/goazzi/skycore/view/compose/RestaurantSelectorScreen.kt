@@ -33,15 +33,18 @@ import com.goazzi.skycore.R
 import com.goazzi.skycore.viewmodel.MainViewModel
 
 @Composable
-fun RestaurantSelectorScreen(onSliderPositionChanged: (Int) -> Unit,modifier: Modifier = Modifier) {
+fun RestaurantSelectorScreen(
+    onSliderPositionChanged: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
 //    var sliderPosition by remember { mutableFloatStateOf(100f) }
 //    var locationSwitch by remember { mutableStateOf(false) }
-
+    RadiusSelectorLayout(onSliderPositionChanged)
 
 }
 
 @Composable
-fun RadiusSelectorLayout(onSliderPositionChanged: (Int) -> Unit,modifier: Modifier = Modifier) {
+fun RadiusSelectorLayout(onSliderPositionChanged: (Int) -> Unit, modifier: Modifier = Modifier) {
     var sliderPosition by remember { mutableFloatStateOf(100f) }
     var locationSwitch by remember { mutableStateOf(false) }
 
@@ -77,7 +80,10 @@ fun RadiusSelectorLayout(onSliderPositionChanged: (Int) -> Unit,modifier: Modifi
 
         Slider(
             value = if (sliderPosition == 0f) 100f else sliderPosition,
-            onValueChange = { sliderPosition = if (it == 0f) 100f else it },
+            onValueChange = {
+                sliderPosition = if (it == 0f) 100f else it
+                onSliderPositionChanged(it.toInt())
+            },
 //            value = sliderPosition,
 //            onValueChange = { sliderPosition = it },
             colors = SliderDefaults.colors(
