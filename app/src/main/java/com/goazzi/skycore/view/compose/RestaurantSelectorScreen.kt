@@ -2,10 +2,13 @@ package com.goazzi.skycore.view.compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -27,14 +30,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.goazzi.skycore.R
+import com.goazzi.skycore.viewmodel.MainViewModel
 
 @Composable
-fun RestaurantSelectorScreen() {
+fun RestaurantSelectorScreen(onSliderPositionChanged: (Int) -> Unit,modifier: Modifier = Modifier) {
+//    var sliderPosition by remember { mutableFloatStateOf(100f) }
+//    var locationSwitch by remember { mutableStateOf(false) }
+
+
 }
 
 @Composable
-fun RadiusSelectorLayout(modifier: Modifier = Modifier) {
-    var sliderPosition by remember { mutableFloatStateOf(0f) }
+fun RadiusSelectorLayout(onSliderPositionChanged: (Int) -> Unit,modifier: Modifier = Modifier) {
+    var sliderPosition by remember { mutableFloatStateOf(100f) }
     var locationSwitch by remember { mutableStateOf(false) }
 
     Column(
@@ -68,15 +76,19 @@ fun RadiusSelectorLayout(modifier: Modifier = Modifier) {
         }
 
         Slider(
-            value = 0F,
-            onValueChange = { sliderPosition = it },
+            value = if (sliderPosition == 0f) 100f else sliderPosition,
+            onValueChange = { sliderPosition = if (it == 0f) 100f else it },
+//            value = sliderPosition,
+//            onValueChange = { sliderPosition = it },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.secondary,
                 activeTrackColor = MaterialTheme.colorScheme.secondary,
                 inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
             ),
-            steps = 20,
-            valueRange = 100f..5000f,
+            steps = 19,
+            valueRange = 0f..5000f,
+//            steps = 4,
+//            valueRange = 0f..5f,
             modifier = Modifier.background(color = Color.Yellow)
         )
 
@@ -123,6 +135,25 @@ fun RadiusSelectorLayout(modifier: Modifier = Modifier) {
                 locationSwitch = it
             }, modifier = Modifier.align(Alignment.CenterVertically))
         }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(color = colorResource(id = R.color.purple_700))
+        )
+
+        Text(
+            text = "Nearby Restaurants:",
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            color = colorResource(id = R.color.black),
+            overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(top = 10.dp)
+        )
     }
 }
 
@@ -134,5 +165,5 @@ fun LocationSelectorLayout() {
 @Composable
 @Preview(showBackground = true)
 fun RadiusSelectorLayoutPreview() {
-    RadiusSelectorLayout()
+//    RadiusSelectorLayout()
 }

@@ -134,6 +134,13 @@
         app:layout_constraintTop_toBottomOf="@+id/separator" />
 
     <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/cv_restaurant_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/cv_restaurant"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.compose.ui.platform.ComposeView
         android:id="@+id/cv_restaurant"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -143,7 +150,7 @@
         android:layout_marginBottom="10dp"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNearbyRestaurants" />
+        app:layout_constraintTop_toBottomOf="@+id/cv_restaurant_selector" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -225,4 +232,9 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/compose_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

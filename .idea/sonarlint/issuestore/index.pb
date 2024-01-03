@@ -118,3 +118,5 @@ G.idea/sonarlint/issuestore/a/5/a5cc2925ca8258af241be7e5b0381edf30266302,e/d/ed
 Q.idea/sonarlint/securityhotspotstore/a/5/a5cc2925ca8258af241be7e5b0381edf30266302,3/0/30205a209c6ce77c4cfc19a09e6f57c588b7fb88
 }
 Mapp/src/main/java/com/goazzi/skycore/view/compose/RestaurantSelectorScreen.kt,d/e/de3ae4b43bd70f5317b4407a2a4b501b79ad70e4
+u
+Eapp/src/main/java/com/goazzi/skycore/view/compose/RestaurantScreen.kt,d/3/d3b97a55434c4bc7ea8c34fe4df14df3133a110a

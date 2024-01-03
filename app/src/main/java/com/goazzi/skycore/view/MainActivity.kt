@@ -36,6 +36,7 @@ import com.goazzi.skycore.model.Business
 import com.goazzi.skycore.model.BusinessesServiceClass
 import com.goazzi.skycore.model.SearchBusiness
 import com.goazzi.skycore.view.compose.RestaurantListScreen
+import com.goazzi.skycore.view.compose.RestaurantSelectorScreen
 import com.goazzi.skycore.viewmodel.MainViewModel
 import com.goazzi.skycore.viewmodel.MainViewModelFactory
 import com.google.android.gms.location.*
@@ -76,6 +77,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
         supportActionBar?.hide()
 
         binding = ActivityMainBinding.inflate(layoutInflater).apply {
+            composeView.apply {
+                setViewCompositionStrategy(
+                    ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+                )
+                setContent {
+
+                }
+            }
             cvRestaurant.apply {
                 setViewCompositionStrategy(
                     ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
