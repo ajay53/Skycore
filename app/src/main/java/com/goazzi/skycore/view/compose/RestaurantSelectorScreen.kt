@@ -30,27 +30,48 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.goazzi.skycore.R
+import com.goazzi.skycore.misc.Enum
 import com.goazzi.skycore.viewmodel.MainViewModel
 
 @Composable
 fun RestaurantSelectorScreen(
-    onSliderPositionChanged: (Int) -> Unit,
+    onSliderPositionChanged: (Float) -> Unit,
+    onLocationSwitchChanged: (Enum.Location) -> Unit,
     modifier: Modifier = Modifier
 ) {
 //    var sliderPosition by remember { mutableFloatStateOf(100f) }
 //    var locationSwitch by remember { mutableStateOf(false) }
-    RadiusSelectorLayout(onSliderPositionChanged)
 
+    Column(modifier = modifier.padding(10.dp)) {
+        RadiusSelectorLayout(onSliderPositionChanged)
+        LocationSelectorLayout(onLocationSwitchChanged)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(color = colorResource(id = R.color.purple_700))
+        )
+
+        Text(
+            text = "Nearby Restaurants:",
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            color = colorResource(id = R.color.black),
+            overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(top = 10.dp)
+        )
+    }
 }
 
 @Composable
-fun RadiusSelectorLayout(onSliderPositionChanged: (Int) -> Unit, modifier: Modifier = Modifier) {
+fun RadiusSelectorLayout(onSliderPositionChanged: (Float) -> Unit, modifier: Modifier = Modifier) {
     var sliderPosition by remember { mutableFloatStateOf(100f) }
-    var locationSwitch by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
-            .padding(10.dp)
             .background(color = colorResource(id = R.color.background))
     ) {
         Row(
@@ -82,7 +103,7 @@ fun RadiusSelectorLayout(onSliderPositionChanged: (Int) -> Unit, modifier: Modif
             value = if (sliderPosition == 0f) 100f else sliderPosition,
             onValueChange = {
                 sliderPosition = if (it == 0f) 100f else it
-                onSliderPositionChanged(it.toInt())
+                onSliderPositionChanged(sliderPosition)
             },
 //            value = sliderPosition,
 //            onValueChange = { sliderPosition = it },
@@ -120,56 +141,41 @@ fun RadiusSelectorLayout(onSliderPositionChanged: (Int) -> Unit, modifier: Modif
                 style = MaterialTheme.typography.bodyLarge
             )
         }
+    }
+}
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Color.Gray)
-        ) {
-            Text(
-                text = stringResource(id = R.string.radius_selector),
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                color = colorResource(id = R.color.black),
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
+@Composable
+fun LocationSelectorLayout(
+    onLocationSwitchChanged: (Enum.Location) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var locationSwitch by remember { mutableStateOf(false) }
 
-            Switch(checked = locationSwitch, onCheckedChange = {
-                locationSwitch = it
-            }, modifier = Modifier.align(Alignment.CenterVertically))
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(color = colorResource(id = R.color.purple_700))
-        )
-
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color.Gray)
+    ) {
         Text(
-            text = "Nearby Restaurants:",
+            text = stringResource(id = R.string.radius_selector),
             fontWeight = FontWeight.Bold,
             maxLines = 1,
             color = colorResource(id = R.color.black),
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(top = 10.dp)
+            modifier = Modifier.align(Alignment.CenterVertically)
         )
+
+        Switch(checked = locationSwitch, onCheckedChange = {
+            locationSwitch = it
+        }, modifier = Modifier.align(Alignment.CenterVertically))
     }
-}
-
-@Composable
-fun LocationSelectorLayout() {
-
 }
 
 @Composable
 @Preview(showBackground = true)
 fun RadiusSelectorLayoutPreview() {
 //    RadiusSelectorLayout()
+    RestaurantSelectorScreen(onSliderPositionChanged = {}, onLocationSwitchChanged = {})
 }

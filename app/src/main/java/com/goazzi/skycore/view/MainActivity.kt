@@ -36,6 +36,7 @@ import com.goazzi.skycore.model.Business
 import com.goazzi.skycore.model.BusinessesServiceClass
 import com.goazzi.skycore.model.SearchBusiness
 import com.goazzi.skycore.view.compose.RestaurantListScreen
+import com.goazzi.skycore.view.compose.RestaurantScreen
 import com.goazzi.skycore.view.compose.RestaurantSelectorScreen
 import com.goazzi.skycore.viewmodel.MainViewModel
 import com.goazzi.skycore.viewmodel.MainViewModelFactory
@@ -82,17 +83,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
                     ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
                 )
                 setContent {
-
+                    RestaurantScreen(viewModel = viewModel)
                 }
             }
-            cvRestaurant.apply {
+            /*cvRestaurant.apply {
                 setViewCompositionStrategy(
                     ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
                 )
                 setContent {
                     RestaurantListScreen(viewModel)
                 }
-            }
+            }*/
         }
         setContentView(binding.root)
 
@@ -423,7 +424,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
         }*/
     }
 
-    private fun updateUICompose(businessServiceClass: BusinessesServiceClass){
+    private fun updateUICompose(businessServiceClass: BusinessesServiceClass) {
 //        RestaurantListScreen(restaurants = businessServiceClass.businesses)
     }
 

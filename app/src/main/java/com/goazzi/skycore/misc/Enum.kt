@@ -1,6 +1,6 @@
 package com.goazzi.skycore.misc
 
-object Enum{
+object Enum {
     enum class SortBy(val type: String) {
         BEST_MATCH("best_match"),
         RATING("rating"),
@@ -10,5 +10,10 @@ object Enum{
 
     enum class Permission {
         GPS, LOCATION
+    }
+
+    enum class Location {
+        USA,
+        CURRENT
     }
 }

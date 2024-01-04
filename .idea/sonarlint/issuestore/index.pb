@@ -6,7 +6,7 @@ l
 y
 Iapp/src/main/java/com/goazzi/skycore/adapter/RestaurantRecyclerAdapter.kt,2/5/255e8317b3cf3af207d704c1060603f6b40a2259
 i
-9app/src/main/java/com/goazzi/skycore/view/MainActivity.kt,8/e/8e3ca31c62faa124ffdb5e713d027ccdf08febbf
+9app/src/main/java/com/goazzi/skycore/view/MainActivity.kt,8\e\8e3ca31c62faa124ffdb5e713d027ccdf08febbf
 |
 Lapp/src/main/java/com/goazzi/skycore/adapter/RestaurantRecyclerAdapterNew.kt,8/6/86f29a7d09adc38a1d946040b939d93cdb9b131a
 @
@@ -18,11 +18,11 @@ a
 f
 6app/src/main/java/com/goazzi/skycore/misc/Constants.kt,d/1/d13f7f455e52becddee932b4ab45c6affc4b5ab2
 a
-1app/src/main/java/com/goazzi/skycore/misc/Enum.kt,a/a/aa342a60e4a77f57e3433331ed684828f0806ef8
+1app/src/main/java/com/goazzi/skycore/misc/Enum.kt,a\a\aa342a60e4a77f57e3433331ed684828f0806ef8
 P
- app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 o
-?app/src/main/java/com/goazzi/skycore/viewmodel/MainViewModel.kt,5/7/57cb98d2492acf3076e0d4ad4a16e9c51ff7c1fb
+?app/src/main/java/com/goazzi/skycore/viewmodel/MainViewModel.kt,5\7\57cb98d2492acf3076e0d4ad4a16e9c51ff7c1fb
 q
 Aapp/src/main/java/com/goazzi/skycore/repository/api/ApiService.kt,5/e/5e8862ba2f53363c279b76cfe0668bedcf9f1778
 v
@@ -99,9 +99,9 @@ G.idea/sonarlint/issuestore/6/a/6aa3686505313aa4296b302c50e9f6e5d4f83810,8/3/83
 Å
 Q.idea/sonarlint/securityhotspotstore/6/5/65ae487c8283b592c1ea1d03c690b137cc648c9e,c/0/c0f06b2c8ebfea00d2d4e5727e2ba6e346de91bc
 w
-Gapp/src/main/java/com/goazzi/skycore/view/compose/RestaurantListItem.kt,0/1/0133e4286cb53b85a9e693326fac65e5a83b9dec
+Gapp/src/main/java/com/goazzi/skycore/view/compose/RestaurantListItem.kt,0\1\0133e4286cb53b85a9e693326fac65e5a83b9dec
 x
-Happ/src/main/java/com/goazzi/skycore/view/compose/RestauranListScreen.kt,4/a/4aefe06f2f3936e673ab2facaf4eb38600fac9a7
+Happ/src/main/java/com/goazzi/skycore/view/compose/RestauranListScreen.kt,4\a\4aefe06f2f3936e673ab2facaf4eb38600fac9a7
 w
 G.idea/sonarlint/issuestore/d/5/d51807034090b72f02209f48e35b381bd5719312,f\0\f0176c584441dafdc8a8208738cdd4eef5ca59db
 \
@@ -117,6 +117,6 @@ G.idea/sonarlint/issuestore/a/5/a5cc2925ca8258af241be7e5b0381edf30266302,e/d/ed
 Å
 Q.idea/sonarlint/securityhotspotstore/a/5/a5cc2925ca8258af241be7e5b0381edf30266302,3/0/30205a209c6ce77c4cfc19a09e6f57c588b7fb88
 }
-Mapp/src/main/java/com/goazzi/skycore/view/compose/RestaurantSelectorScreen.kt,d/e/de3ae4b43bd70f5317b4407a2a4b501b79ad70e4
+Mapp/src/main/java/com/goazzi/skycore/view/compose/RestaurantSelectorScreen.kt,d\e\de3ae4b43bd70f5317b4407a2a4b501b79ad70e4
 u
-Eapp/src/main/java/com/goazzi/skycore/view/compose/RestaurantScreen.kt,d/3/d3b97a55434c4bc7ea8c34fe4df14df3133a110a
+Eapp/src/main/java/com/goazzi/skycore/view/compose/RestaurantScreen.kt,d\3\d3b97a55434c4bc7ea8c34fe4df14df3133a110a
