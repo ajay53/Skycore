@@ -31,12 +31,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.goazzi.skycore.R
 import com.goazzi.skycore.misc.Enum
+import com.goazzi.skycore.misc.Util
 import com.goazzi.skycore.viewmodel.MainViewModel
 
 @Composable
 fun RestaurantSelectorScreen(
     onSliderPositionChanged: (Float) -> Unit,
-    onLocationSwitchChanged: (Enum.Location) -> Unit,
+    onLocationSwitchChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
 //    var sliderPosition by remember { mutableFloatStateOf(100f) }
@@ -71,8 +72,7 @@ fun RadiusSelectorLayout(onSliderPositionChanged: (Float) -> Unit, modifier: Mod
     var sliderPosition by remember { mutableFloatStateOf(100f) }
 
     Column(
-        modifier = modifier
-            .background(color = colorResource(id = R.color.background))
+        modifier = modifier.background(color = colorResource(id = R.color.background))
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -100,8 +100,7 @@ fun RadiusSelectorLayout(onSliderPositionChanged: (Float) -> Unit, modifier: Mod
         }
 
         Slider(
-            value = if (sliderPosition == 0f) 100f else sliderPosition,
-            onValueChange = {
+            value = if (sliderPosition == 0f) 100f else sliderPosition, onValueChange = {
                 sliderPosition = if (it == 0f) 100f else it
                 onSliderPositionChanged(sliderPosition)
             },
@@ -111,9 +110,7 @@ fun RadiusSelectorLayout(onSliderPositionChanged: (Float) -> Unit, modifier: Mod
                 thumbColor = MaterialTheme.colorScheme.secondary,
                 activeTrackColor = MaterialTheme.colorScheme.secondary,
                 inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
-            steps = 19,
-            valueRange = 0f..5000f,
+            ), steps = 19, valueRange = 0f..5000f,
 //            steps = 4,
 //            valueRange = 0f..5f,
             modifier = Modifier.background(color = Color.Yellow)
@@ -146,8 +143,7 @@ fun RadiusSelectorLayout(onSliderPositionChanged: (Float) -> Unit, modifier: Mod
 
 @Composable
 fun LocationSelectorLayout(
-    onLocationSwitchChanged: (Enum.Location) -> Unit,
-    modifier: Modifier = Modifier
+    onLocationSwitchChanged: (Boolean) -> Unit, modifier: Modifier = Modifier
 ) {
     var locationSwitch by remember { mutableStateOf(false) }
 
@@ -169,6 +165,7 @@ fun LocationSelectorLayout(
 
         Switch(checked = locationSwitch, onCheckedChange = {
             locationSwitch = it
+            onLocationSwitchChanged(it)
         }, modifier = Modifier.align(Alignment.CenterVertically))
     }
 }
@@ -176,6 +173,5 @@ fun LocationSelectorLayout(
 @Composable
 @Preview(showBackground = true)
 fun RadiusSelectorLayoutPreview() {
-//    RadiusSelectorLayout()
     RestaurantSelectorScreen(onSliderPositionChanged = {}, onLocationSwitchChanged = {})
 }

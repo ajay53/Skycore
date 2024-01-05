@@ -124,5 +124,9 @@ object Util {
         }
     }
 
+    fun getSelectedLocation(isSwitchEnabled: Boolean): Enum.Location {
+        return if (isSwitchEnabled) Enum.Location.USA else Enum.Location.CURRENT
+    }
+
     private const val TAG = "Util"
 }

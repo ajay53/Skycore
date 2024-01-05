@@ -1,17 +1,18 @@
 package com.goazzi.skycore.viewmodel
 
-import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.switchMap
-import com.goazzi.skycore.misc.Enum
 import com.goazzi.skycore.model.SearchBusiness
 import com.goazzi.skycore.repository.MainRepository
 
 class MainViewModel : ViewModel() {
 
-    var locationSwitch = MutableLiveData<Enum.Location>(Enum.Location.CURRENT)
+    var _isLocationSwitchEnabled = MutableLiveData<Boolean>(false)
+    val isLocationSwitchEnabled: LiveData<Boolean>
+        get() = _isLocationSwitchEnabled
 
     private val _searchBusiness: MutableLiveData<SearchBusiness> = MutableLiveData()
 
