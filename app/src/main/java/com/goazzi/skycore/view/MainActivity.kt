@@ -87,17 +87,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
                     ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
                 )
                 setContent {
-                    var radius by remember { mutableFloatStateOf(100f) }
-                    val isLocationSwitchEnabled = viewModel.isLocationSwitchEnabled.observeAsState()
+//                    var radius by remember { mutableFloatStateOf(100f) }
+//                    val isLocationSwitchEnabled = viewModel.isLocationSwitchEnabled.observeAsState()
 
-                    val businessesServiceClass = viewModel.businessServiceClass.observeAsState()
+//                    val businessesServiceClass = viewModel.businessServiceClass.observeAsState()
 
 
-                    RestaurantScreen(onRadiusChanged = {radius->
+                    /*RestaurantScreen(onRadiusChanged = {radius->
 
                     }, onLocationSwitchChanged = {
 
-                    }, businessesServiceClass)
+                    }, businessesServiceClass)*/
                 }
             }
             /*cvRestaurant.apply {
