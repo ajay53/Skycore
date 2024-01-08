@@ -18,7 +18,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -83,7 +87,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
                     ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
                 )
                 setContent {
-                    RestaurantScreen(viewModel = viewModel)
+                    var radius by remember { mutableFloatStateOf(100f) }
+                    val isLocationSwitchEnabled = viewModel.isLocationSwitchEnabled.observeAsState()
+
+                    val businessesServiceClass = viewModel.businessServiceClass.observeAsState()
+
+
+                    RestaurantScreen(onRadiusChanged = {radius->
+
+                    }, onLocationSwitchChanged = {
+
+                    }, businessesServiceClass)
                 }
             }
             /*cvRestaurant.apply {

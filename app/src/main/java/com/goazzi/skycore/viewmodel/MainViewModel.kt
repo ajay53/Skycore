@@ -1,5 +1,6 @@
 package com.goazzi.skycore.viewmodel
 
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,11 +11,14 @@ import com.goazzi.skycore.repository.MainRepository
 
 class MainViewModel : ViewModel() {
 
-    var _isLocationSwitchEnabled = MutableLiveData<Boolean>(false)
+//    private var _isLocationSwitchEnabled = MutableLiveData<Boolean>(false)
+    private var _isLocationSwitchEnabled = MutableState<Boolean>(false)
     val isLocationSwitchEnabled: LiveData<Boolean>
         get() = _isLocationSwitchEnabled
 
     private val _searchBusiness: MutableLiveData<SearchBusiness> = MutableLiveData()
+
+
 
     val businessServiceClass = _searchBusiness.switchMap {
         MainRepository.searchBusinesses(it.lat, it.lon, it.radius, it.sortBy, it.limit, it.offset)

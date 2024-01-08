@@ -8,35 +8,32 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.goazzi.skycore.R
 import com.goazzi.skycore.model.Business
-import com.goazzi.skycore.viewmodel.MainViewModel
+import com.goazzi.skycore.model.BusinessesServiceClass
 
 @Composable
-fun RestaurantListScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
-    val foo = viewModel.businessServiceClass.observeAsState()
-    val business: List<Business>? = foo.value?.businesses
+fun RestaurantListScreen(
+    businessesServiceClass: BusinessesServiceClass,
+    modifier: Modifier = Modifier
+) {
+    val business: List<Business> = businessesServiceClass.businesses
 
     //further checks can be added for http_status, etc.
-    if (!business.isNullOrEmpty()) {
+    if (business.isNotEmpty()) {
         //show restaurant list
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(5.dp),

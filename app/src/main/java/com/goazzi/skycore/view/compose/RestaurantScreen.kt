@@ -1,38 +1,49 @@
 package com.goazzi.skycore.view.compose
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.goazzi.skycore.misc.Enum
-import com.goazzi.skycore.viewmodel.MainViewModel
+import com.goazzi.skycore.model.BusinessesServiceClass
 
 @Composable
-fun RestaurantScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
-    var radius by remember { mutableFloatStateOf(100f) }
-    val locationSwitch = viewModel.isLocationSwitchEnabled.observeAsState()
-//    var locationSwitch by remember { mutableStateOf(false) }
+fun RestaurantScreen(
+//    onRadiusChanged: (Float) -> Unit,
+//    onLocationSwitchChanged: (Boolean) -> Unit,
+//    businessesServiceClass: BusinessesServiceClass,
+
+
+    viewModel:BusinessesServiceClass,
+    modifier: Modifier = Modifier
+) {
+//    var radius by remember { mutableFloatStateOf(100f) }
+//    val isLocationSwitchEnabled = viewModel.isLocationSwitchEnabled.observeAsState()
+
+//    val businessesServiceClassState = viewModel.businessServiceClass.observeAsState()
 
     Column {
-        Text(text = radius.toString())
+//        Text(text = radius.toString())
         RestaurantSelectorScreen(
-            onSliderPositionChanged = { sliderPosition ->
-                radius = sliderPosition
+            onSliderPositionChanged = { radius ->
+                callApi(radius, viewModel.is)
+                onRadiusChanged(radius)
+//                onRestaurantSelectorUpdated(radius)
+//                radius = sliderPosition
+//                callApi(radius.toInt(), isLocationSwitchEnabled.value ?: false)
             },
-            onLocationSwitchChanged = { selectedLocation ->
-                viewModel._isLocationSwitchEnabled.value = selectedLocation
+            onLocationSwitchChanged = { isEnabled ->
+                onLocationSwitchChanged(isEnabled)
+//                isLocationSwitchEnabled = isEnabled
+//                onRestaurantSelectorUpdated(100, isEnabled)
+//                viewModel._isLocationSwitchEnabled.value = selectedLocation
+//                callApi(radius.toInt(), isLocationSwitchEnabled.value ?: false)
 //                locationSwitch.value = selectedLocation
             },
             modifier = modifier
         )
-//        RestaurantListScreen(viewModel = )
+        RestaurantListScreen(businessesServiceClass = businessesServiceClass)
     }
+}
+
+private fun callApi(radius: Int, isLocationSwitchEnabled: Boolean) {
 
 }

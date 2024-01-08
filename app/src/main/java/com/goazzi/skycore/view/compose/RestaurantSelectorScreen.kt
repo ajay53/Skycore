@@ -151,7 +151,7 @@ fun LocationSelectorLayout(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Gray)
+            .background(color = Color.LightGray)
     ) {
         Text(
             text = stringResource(id = R.string.radius_selector),
