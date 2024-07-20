@@ -17,13 +17,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,23 +26,20 @@ import com.goazzi.skycore.adapter.RestaurantRecyclerAdapter
 import com.goazzi.skycore.adapter.RestaurantRecyclerAdapterNew
 import com.goazzi.skycore.databinding.ActivityMainBinding
 import com.goazzi.skycore.databinding.DialogLocationRequestBinding
+import com.goazzi.skycore.decoration.TopSpacingItemDecoration
 import com.goazzi.skycore.misc.Constants
 import com.goazzi.skycore.misc.Enum
 import com.goazzi.skycore.misc.Util
 import com.goazzi.skycore.model.Business
 import com.goazzi.skycore.model.BusinessesServiceClass
 import com.goazzi.skycore.model.SearchBusiness
-import com.goazzi.skycore.view.compose.RestaurantListScreen
-import com.goazzi.skycore.view.compose.RestaurantScreen
-import com.goazzi.skycore.view.compose.RestaurantSelectorScreen
 import com.goazzi.skycore.viewmodel.MainViewModel
 import com.goazzi.skycore.viewmodel.MainViewModelFactory
 import com.google.android.gms.location.*
 import kotlinx.coroutines.*
 import java.text.DecimalFormat
 
-class MainActivity : AppCompatActivity(R.layout.activity_main),
-    RestaurantRecyclerAdapter.OnRestaurantClickListener,
+class MainActivity : AppCompatActivity(), RestaurantRecyclerAdapter.OnRestaurantClickListener,
     RestaurantRecyclerAdapterNew.Interaction,
     View.OnClickListener {
 
@@ -68,6 +58,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
     private var lat: Double = 0.0
     private var lon: Double = 0.0
 
+    val sortBy = Enum.SortBy.BEST_MATCH.type
+
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(
             this,
@@ -81,34 +73,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
         //to hide action/title bar
         supportActionBar?.hide()
 
-        binding = ActivityMainBinding.inflate(layoutInflater).apply {
-            composeView.apply {
-                setViewCompositionStrategy(
-                    ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
-                )
-                setContent {
-//                    var radius by remember { mutableFloatStateOf(100f) }
-//                    val isLocationSwitchEnabled = viewModel.isLocationSwitchEnabled.observeAsState()
-
-//                    val businessesServiceClass = viewModel.businessServiceClass.observeAsState()
-
-
-                    /*RestaurantScreen(onRadiusChanged = {radius->
-
-                    }, onLocationSwitchChanged = {
-
-                    }, businessesServiceClass)*/
-                }
-            }
-            /*cvRestaurant.apply {
-                setViewCompositionStrategy(
-                    ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
-                )
-                setContent {
-                    RestaurantListScreen(viewModel)
-                }
-            }*/
-        }
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         viewModel.businessServiceClass.observe(this) { business ->
@@ -120,8 +85,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
                     Toast.makeText(applicationContext, business.message, Toast.LENGTH_SHORT)
                         .show()
                 }
-//                binding.ivNoRestaurant.visibility = View.VISIBLE
-//                binding.tvNoRestaurant.visibility = View.VISIBLE
+                binding.ivNoRestaurant.visibility = View.VISIBLE
+                binding.tvNoRestaurant.visibility = View.VISIBLE
             } else {
                 updateUI(business)
             }
@@ -146,8 +111,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initViews() {
-//        binding.ivNoRestaurant.visibility = View.VISIBLE
-//        binding.tvNoRestaurant.visibility = View.VISIBLE
+        binding.ivNoRestaurant.visibility = View.VISIBLE
+        binding.tvNoRestaurant.visibility = View.VISIBLE
 
         binding.btnRemove.setOnClickListener(this)
 
@@ -194,13 +159,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
                         40.730610,
                         -73.935242,
                         radius,
-                        Enum.SortBy.DISTANCE.type,
+                        sortBy,
                         Constants.PAGE_LIMIT,
                         0
                     )
                 } else {
                     SearchBusiness(
-                        lat, lon, radius, Enum.SortBy.DISTANCE.type, Constants.PAGE_LIMIT,
+                        lat, lon, radius, sortBy, Constants.PAGE_LIMIT,
                         0
                     )
                 }
@@ -245,8 +210,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
             isLoading = false
             isLastPage = false
             binding.sbRadiusSelector.progress = 0
-//            binding.ivNoRestaurant.visibility = View.VISIBLE
-//            binding.tvNoRestaurant.visibility = View.VISIBLE
+            binding.ivNoRestaurant.visibility = View.VISIBLE
+            binding.tvNoRestaurant.visibility = View.VISIBLE
             viewModel.cancelJobs()
             binding.progressBar.hide()
         }
@@ -286,13 +251,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
                             40.730610,
                             -73.935242,
                             radius,
-                            Enum.SortBy.DISTANCE.type,
+                            sortBy,
                             Constants.PAGE_LIMIT,
                             businesses.size
                         )
                     } else {
                         SearchBusiness(
-                            lat, lon, radius, Enum.SortBy.DISTANCE.type, Constants.PAGE_LIMIT,
+                            lat, lon, radius, sortBy, Constants.PAGE_LIMIT,
                             businesses.size
                         )
                     }
@@ -317,13 +282,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
                     40.730610,
                     -73.935242,
                     radius,
-                    Enum.SortBy.DISTANCE.type,
+                    sortBy,
                     Constants.PAGE_LIMIT,
                     0
                 )
             } else {
                 SearchBusiness(
-                    lat, lon, radius, Enum.SortBy.DISTANCE.type, Constants.PAGE_LIMIT,
+                    lat, lon, radius, sortBy, Constants.PAGE_LIMIT,
                     0
                 )
             }
@@ -362,10 +327,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
             businesses = mutableListOf<Business>().apply { addAll(businessServiceClass.businesses) }
 
             binding.rvRestaurants.apply {
+                layoutManager = LinearLayoutManager(applicationContext)
                 recyclerAdapterNew =
                     RestaurantRecyclerAdapterNew(this@MainActivity)
                 adapter = recyclerAdapterNew
-                layoutManager = LinearLayoutManager(applicationContext)
+                val topSpacingItemDecoration = TopSpacingItemDecoration(paddingTop = 20, paddingHorizontal = 10)
+                addItemDecoration(topSpacingItemDecoration)
                 setHasFixedSize(true)
             }
 
@@ -426,20 +393,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
                 recyclerAdapter.notifyDataSetChanged()
             }
         }*/
-        //TODO("undo")
-        /*if (businesses.isEmpty()) {
+        if (businesses.isEmpty()) {
+            Log.d(TAG, "updateUI: businesses.isEmpty() : true")
             binding.ivNoRestaurant.visibility = View.VISIBLE
             binding.tvNoRestaurant.visibility = View.VISIBLE
-            binding.rvRestaurants.visibility = View.GONE
+//            binding.rvRestaurants.visibility = View.GONE
+            binding.swipeRefreshLayout.visibility = View.GONE
         } else {
+            Log.d(TAG, "updateUI: businesses.isEmpty() : false")
             binding.ivNoRestaurant.visibility = View.GONE
             binding.tvNoRestaurant.visibility = View.GONE
-            binding.rvRestaurants.visibility = View.VISIBLE
-        }*/
-    }
-
-    private fun updateUICompose(businessServiceClass: BusinessesServiceClass) {
-//        RestaurantListScreen(restaurants = businessServiceClass.businesses)
+//            binding.rvRestaurants.visibility = View.VISIBLE
+            binding.swipeRefreshLayout.visibility = View.VISIBLE
+        }
     }
 
     private val permReqLauncher =

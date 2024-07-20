@@ -1,6 +1,7 @@
 package com.goazzi.skycore.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class RestaurantRecyclerAdapter(
 ) : RecyclerView.Adapter<RestaurantRecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        Log.d(TAG, "onCreateViewHolder: ")
         val layoutInflater =
             LayoutInflater.from(parent.context)
         val itemBinding: LayoutRestaurantListItemBinding = LayoutRestaurantListItemBinding.inflate(
@@ -29,6 +31,7 @@ class RestaurantRecyclerAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: Business = businessList[position]
+        Log.d(TAG, "onBindViewHolder: $position : $item")
         holder.bind(item)
     }
 
@@ -36,7 +39,7 @@ class RestaurantRecyclerAdapter(
         return businessList.size
     }
 
-    fun refreshList(restaurants:List<Business>){
+    fun refreshList(restaurants: List<Business>) {
         val oldList = businessList
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
             RestaurantDiffCallback(oldList, restaurants)
@@ -70,7 +73,7 @@ class RestaurantRecyclerAdapter(
     }
 
     inner class ViewHolder(
-        binding: LayoutRestaurantListItemBinding
+        binding: LayoutRestaurantListItemBinding,
     ) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
@@ -93,5 +96,9 @@ class RestaurantRecyclerAdapter(
 
     interface OnRestaurantClickListener {
         fun onRestaurantClick(pos: Int)
+    }
+
+    companion object {
+        private const val TAG = "RestaurantRecyclerAdapt"
     }
 }

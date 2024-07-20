@@ -174,7 +174,7 @@
             android:id="@+id/rvRestaurants"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:listitem="@layout/layout_restaurant_list_item" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

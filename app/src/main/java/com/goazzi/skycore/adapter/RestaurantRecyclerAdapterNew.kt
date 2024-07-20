@@ -1,8 +1,8 @@
 package com.goazzi.skycore.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +35,6 @@ class RestaurantRecyclerAdapterNew(private val interaction: Interaction) :
 
     private val differ = AsyncListDiffer(this, diffCallback)
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         /*return ViewHolder(
@@ -47,7 +46,7 @@ class RestaurantRecyclerAdapterNew(private val interaction: Interaction) :
             interaction
         )*/
 
-
+        Log.d(TAG, "onCreateViewHolder: ")
         val layoutInflater =
             LayoutInflater.from(parent.context)
         val itemBinding: LayoutRestaurantListItemBinding = LayoutRestaurantListItemBinding.inflate(
@@ -55,12 +54,12 @@ class RestaurantRecyclerAdapterNew(private val interaction: Interaction) :
             parent,
             false
         )
-        return ViewHolder(itemBinding)
+        return ItemViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ViewHolder -> {
+            is ItemViewHolder -> {
                 holder.bind(differ.currentList[position])
             }
         }
@@ -92,7 +91,7 @@ class RestaurantRecyclerAdapterNew(private val interaction: Interaction) :
         notifyItemInserted(position)
     }
 
-    inner class ViewHolder(binding: LayoutRestaurantListItemBinding) :
+    inner class ItemViewHolder(binding: LayoutRestaurantListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         private val binding: LayoutRestaurantListItemBinding
@@ -113,5 +112,9 @@ class RestaurantRecyclerAdapterNew(private val interaction: Interaction) :
 
     fun interface Interaction {
         fun onItemSelected(position: Int, item: Business)
+    }
+
+    companion object{
+        private const val TAG = "RecyclerAdapterNew"
     }
 }
